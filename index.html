@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI+业务型产品经理知识图谱 — Soul语聊房AI管家实战沉淀</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-warm: #f7f3ed;
+    --bg-card: #fffdf9;
+    --text-primary: #2c2420;
+    --text-secondary: #6b5e54;
+    --text-muted: #9a8e84;
+    --accent-sage: #7a9e7e;
+    --accent-sage-light: #d4e6d6;
+    --accent-blush: #c4868b;
+    --accent-blush-light: #f2dfe0;
+    --accent-lemon: #d4b946;
+    --accent-lemon-light: #f5edc8;
+    --accent-ink: #3a3330;
+    --border-light: #e8e0d6;
+    --shadow-soft: 0 2px 20px rgba(44, 36, 32, 0.06);
+    --shadow-card: 0 4px 30px rgba(44, 36, 32, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg-warm);
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ===== SLIDE CONTAINER ===== */
+  .deck {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    max-width: 900px;
+    width: 100%;
+    animation: fadeSlideUp 0.8s ease-out both;
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .serif { font-family: 'Noto Serif SC', 'Cormorant Garamond', serif; }
+  .display { font-family: 'Cormorant Garamond', 'Noto Serif SC', serif; }
+
+  h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 1.2rem;
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--accent-sage);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .lead {
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 2;
+  }
+
+  /* ===== DECORATIVE ELEMENTS ===== */
+  .chapter-label {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-sage);
+    border: 1.5px solid var(--accent-sage);
+    padding: 4px 16px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--accent-sage);
+    margin: 2rem 0;
+    opacity: 0.6;
+  }
+
+  .dot-divider {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    letter-spacing: 0.8em;
+    margin: 2rem 0;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-sage { border-left: 4px solid var(--accent-sage); }
+  .card-blush { border-left: 4px solid var(--accent-blush); }
+  .card-lemon { border-left: 4px solid var(--accent-lemon); }
+
+  /* ===== TAGS ===== */
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin: 2px 4px 2px 0;
+  }
+
+  .tag-sage { background: var(--accent-sage-light); color: #4a6e4e; }
+  .tag-blush { background: var(--accent-blush-light); color: #8a4a4f; }
+  .tag-lemon { background: var(--accent-lemon-light); color: #7a6a20; }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+
+  .compare-table th {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 18px;
+    background: var(--accent-sage-light);
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent-sage);
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(122, 158, 126, 0.04); }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+  }
+
+  .flow-step {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-light);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 120px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .flow-step:hover {
+    border-color: var(--accent-sage);
+    background: var(--accent-sage-light);
+  }
+
+  .flow-arrow {
+    color: var(--accent-sage);
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+
+  .flow-step .step-num {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-sage);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  /* ===== QUOTE BLOCK ===== */
+  .quote-block {
+    position: relative;
+    padding: 28px 32px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin: 2rem 0;
+    border: 1px solid var(--border-light);
+  }
+
+  .quote-block::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--accent-sage-light);
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    line-height: 1;
+  }
+
+  .quote-block p {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== NUMBERED LIST ===== */
+  .num-list { list-style: none; counter-reset: item; }
+
+  .num-list li {
+    counter-increment: item;
+    padding: 12px 0 12px 50px;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .num-list li:last-child { border-bottom: none; }
+
+  .num-list li::before {
+    content: counter(item, decimal-leading-zero);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent-sage);
+    position: absolute;
+    left: 0;
+    top: 8px;
+  }
+
+  .num-list li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ===== GRID LAYOUT ===== */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .slide { padding: 40px 20px; }
+    .flow-container { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+
+  /* ===== COVER SLIDE ===== */
+  .cover-slide {
+    background: linear-gradient(170deg, #f7f3ed 0%, #ede7dd 40%, #e8ddd0 100%);
+    position: relative;
+  }
+
+  .cover-slide::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(122,158,126,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cover-slide::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(196,134,139,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cover-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .cover-subtitle {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--accent-sage);
+    font-weight: 600;
+    margin-top: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .cover-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-slide {
+    background: var(--accent-ink);
+    color: var(--bg-warm);
+  }
+
+  .section-slide h2 {
+    color: var(--bg-warm);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+  }
+
+  .section-slide .chapter-label {
+    color: var(--accent-sage-light);
+    border-color: var(--accent-sage-light);
+  }
+
+  .section-slide p {
+    color: rgba(247, 243, 237, 0.7);
+    font-size: 1.1rem;
+  }
+
+  /* ===== HIGHLIGHT BOX ===== */
+  .highlight-box {
+    background: linear-gradient(135deg, var(--accent-sage-light), rgba(212, 230, 214, 0.3));
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box-blush {
+    background: linear-gradient(135deg, var(--accent-blush-light), rgba(242, 223, 224, 0.3));
+  }
+
+  .highlight-box-lemon {
+    background: linear-gradient(135deg, var(--accent-lemon-light), rgba(245, 237, 200, 0.3));
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-sage), var(--accent-blush));
+    z-index: 100;
+    transition: width 0.15s ease-out;
+  }
+
+  /* ===== NAV DOTS ===== */
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 99;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-light);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: var(--accent-sage);
+    transform: scale(1.4);
+  }
+
+  .nav-dot:hover { background: var(--accent-blush); }
+
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+  }
+
+  /* ===== CONCEPT PAIR ===== */
+  .concept-pair {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+
+  .concept-left {
+    flex: 1;
+    padding: 24px;
+    background: var(--bg-card);
+  }
+
+  .concept-right {
+    flex: 1;
+    padding: 24px;
+    background: var(--accent-sage-light);
+  }
+
+  .concept-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  /* ===== ICON METRIC ===== */
+  .metric-row {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .metric-item {
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+    padding: 20px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+  }
+
+  .metric-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent-sage);
+    line-height: 1;
+  }
+
+  .metric-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ===== INLINE CODE ===== */
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.85em;
+    background: rgba(122, 158, 126, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--accent-sage);
+  }
+
+  /* ===== FOOTER ===== */
+  .slide-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav-dots" id="navDots"></nav>
+
+<div class="deck">
+
+<!-- ===== SLIDE 01: COVER ===== -->
+<section class="slide cover-slide" id="slide-1">
+  <div class="slide-inner" style="position:relative; z-index:1;">
+    <div class="cover-meta">Knowledge Deck · May 2026</div>
+    <h1>AI + 业务型<br>产品经理知识图谱</h1>
+    <div class="cover-subtitle">
+      Soul 语聊房 AI 管家「麦麦」实战沉淀<br>
+      从 Prompt 工程到模型微调的完整认知框架
+    </div>
+    <div class="cover-footer">
+      <span>基于三轮深度对话提炼</span>
+      <span>共 10 个核心知识模块</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 02: SECTION — 角色定位 ===== -->
+<section class="slide section-slide" id="slide-2">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 01</div>
+    <h2>你是哪一类 AI 产品经理？</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">两条路径，两种打法，两套交付物。<br>先搞清楚自己在哪条路上。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 03: 两类PM对比 ===== -->
+<section class="slide" id="slide-3">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 01</div>
+    <h2>两类 AI PM 的本质区别</h2>
+
+    <div class="concept-pair">
+      <div class="concept-left">
+        <div class="concept-label">Type A · AI 原生产品</div>
+        <h3 style="color:var(--accent-blush);">没有 AI，产品不存在</h3>
+        <p style="font-size:0.9rem;">如 Claude、ChatGPT、Midjourney。AI 能力本身就是产品价值的全部。PM 的核心工作是推动 AI 能力的边界。</p>
+        <div>
+          <span class="tag tag-blush">训练数据集</span>
+          <span class="tag tag-blush">Benchmark</span>
+          <span class="tag tag-blush">模型评估</span>
+        </div>
+      </div>
+      <div class="concept-right">
+        <div class="concept-label">Type B · AI + 现有业务</div>
+        <h3 style="color:#4a6e4e;">AI 是增强剂，不是主角</h3>
+        <p style="font-size:0.9rem;">如智能客服、语聊房 AI 管家。产品已有用户和场景，AI 让体验更好。PM 的核心工作是让 AI 融入而非破坏。</p>
+        <div>
+          <span class="tag tag-sage">场景适配</span>
+          <span class="tag tag-sage">体验平衡</span>
+          <span class="tag tag-sage">业务指标</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>你属于 Type B。你的成功标准不是「AI 多聪明」，<br>而是「有麦麦的群聊，留存是否比没有的高」。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 04: 交付物对比 ===== -->
+<section class="slide" id="slide-4">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 01</div>
+    <h2>两类 PM 的交付物差异</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:25%;">维度</th>
+          <th style="width:37%;">AI 原生 PM</th>
+          <th style="width:38%;">AI + 业务 PM（你）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>成功标准</strong></td>
+          <td>AI 能力指标提升</td>
+          <td>业务指标提升（留存、活跃、满意度）</td>
+        </tr>
+        <tr>
+          <td><strong>核心交付</strong></td>
+          <td>训练数据集 → Benchmark → 模型迭代</td>
+          <td>PRD + 场景设计 + 内容安全 + 运营 SOP + Fallback 方案</td>
+        </tr>
+        <tr>
+          <td><strong>失败代价</strong></td>
+          <td>用户觉得 AI 不好用</td>
+          <td>整个社交体验变差，用户反感</td>
+        </tr>
+        <tr>
+          <td><strong>协作范围</strong></td>
+          <td>主要和 ML 工程师</td>
+          <td>产品、运营、法务、数据、AI 团队</td>
+        </tr>
+        <tr>
+          <td><strong>迭代节奏</strong></td>
+          <td>可以慢（追求模型质量）</td>
+          <td>必须快（市场竞争、用户期待）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SLIDE 05: SECTION — AI渗透阶梯 ===== -->
+<section class="slide section-slide" id="slide-5">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 02</div>
+    <h2>AI 渗透程度阶梯</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">从仅接 API 到自研模型，<br>不同阶段的投入和收益截然不同。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 06: 三个方案 ===== -->
+<section class="slide" id="slide-6">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 02</div>
+    <h2>三种方案的成本-收益对比</h2>
+
+    <div class="grid-3">
+      <div class="card card-sage" style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-sage);">01</div>
+        <h3>仅用 Prompt</h3>
+        <p style="font-size:0.85rem;">接豆包 API + 系统提示词。<br>成本最低，1 周上线。</p>
+        <div class="divider" style="margin:1rem auto;"></div>
+        <div style="font-size:0.82rem; color:var(--text-muted);">
+          效果上限 <strong style="color:var(--accent-sage);">70–75 分</strong><br>
+          月成本 <strong style="color:var(--accent-sage);">¥3 万</strong><br>
+          适合 <strong style="color:var(--accent-sage);">快速验证</strong>
+        </div>
+      </div>
+
+      <div class="card card-lemon" style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-lemon);">02</div>
+        <h3>Prompt + 轻微调</h3>
+        <p style="font-size:0.85rem;">LoRA 微调 + 500–1000 条标注数据。<br>4–8 周交付。</p>
+        <div class="divider" style="margin:1rem auto; background:var(--accent-lemon);"></div>
+        <div style="font-size:0.82rem; color:var(--text-muted);">
+          效果上限 <strong style="color:var(--accent-lemon);">80–85 分</strong><br>
+          一次性投入 <strong style="color:var(--accent-lemon);">¥5–10 万</strong><br>
+          适合 <strong style="color:var(--accent-lemon);">已验证需求</strong>
+        </div>
+      </div>
+
+      <div class="card card-blush" style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-blush);">03</div>
+        <h3>自研模型</h3>
+        <p style="font-size:0.85rem;">完整训练 + 5000 条数据 + ML 团队。<br>3 个月+。</p>
+        <div class="divider" style="margin:1rem auto; background:var(--accent-blush);"></div>
+        <div style="font-size:0.82rem; color:var(--text-muted);">
+          效果上限 <strong style="color:var(--accent-blush);">85–95 分</strong><br>
+          投入 <strong style="color:var(--accent-blush);">百万级</strong><br>
+          适合 <strong style="color:var(--accent-blush);">核心竞争力</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:2rem;">
+      <p style="margin:0; font-size:0.92rem;"><strong>你的现状：</strong>方案 01。正确做法是先把 Prompt 跑到极限，收集数据，3 个月后再决定是否升级。不要跟风说「要自研模型」。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 07: SECTION — 核心概念 ===== -->
+<section class="slide section-slide" id="slide-7">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 03</div>
+    <h2>核心概念速查</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">标注、数据集、测试集、微调、蒸馏……<br>用最简单的话讲清楚。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 08: 概念速查表 ===== -->
+<section class="slide" id="slide-8">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 03</div>
+    <h2>十个核心概念，一张表讲清</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:22%;">概念</th>
+          <th style="width:40%;">一句话解释</th>
+          <th style="width:38%;">在麦麦项目中</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>标注数据</strong></td>
+          <td>给原始数据加上「标签」或「标准答案」</td>
+          <td>标注 AI 回应的同理心 / 有用性 / 自然性评分</td>
+        </tr>
+        <tr>
+          <td><strong>训练集</strong></td>
+          <td>让模型学习的数据（占 80%）</td>
+          <td>800 条标注过的群聊对话</td>
+        </tr>
+        <tr>
+          <td><strong>测试集</strong></td>
+          <td>模型从未见过的评估数据（占 20%）</td>
+          <td>200 条保留的对话，用来检验真实效果</td>
+        </tr>
+        <tr>
+          <td><strong>Benchmark</strong></td>
+          <td>最终评估标准，用来对标竞品</td>
+          <td>100 条精心人工评估的案例</td>
+        </tr>
+        <tr>
+          <td><strong>微调</strong></td>
+          <td>在现有模型上用训练集继续训练</td>
+          <td>用标注数据教豆包「麦麦风格」</td>
+        </tr>
+        <tr>
+          <td><strong>LoRA</strong></td>
+          <td>只更新 1–5% 参数的轻量微调法</td>
+          <td>成本降低 99%，效果几乎一样</td>
+        </tr>
+        <tr>
+          <td><strong>Instruction Tuning</strong></td>
+          <td>教模型理解并执行人类指令</td>
+          <td>教豆包理解「要像朋友一样温暖」</td>
+        </tr>
+        <tr>
+          <td><strong>Chain of Thought</strong></td>
+          <td>让 AI 一步步展示推理过程</td>
+          <td>先识别情绪 → 再决策 → 最后回应</td>
+        </tr>
+        <tr>
+          <td><strong>蒸馏</strong></td>
+          <td>用大模型教小模型，换取速度和成本</td>
+          <td>未来端侧部署可能用到</td>
+        </tr>
+        <tr>
+          <td><strong>Prompt 工程</strong></td>
+          <td>通过优化提示词提升 AI 效果</td>
+          <td>你现在最应该深耕的技能</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SLIDE 09: 数据集流转图 ===== -->
+<section class="slide" id="slide-9">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 03</div>
+    <h2>数据集是怎样流转的？</h2>
+    <p class="lead">微调只用训练集，但用测试集评估效果。测试集模型从未见过——看过就作废。</p>
+
+    <div class="flow-container">
+      <div class="flow-step">
+        <span class="step-num">1</span>
+        收集 1000 条<br>原始对话
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <span class="step-num">2</span>
+        人工标注<br>（多维评分）
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <span class="step-num">3</span>
+        分割<br>80% 训练 / 20% 测试
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <span class="step-num">4</span>
+        LoRA 微调<br>（只用训练集）
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <span class="step-num">5</span>
+        测试集评估<br>（模型没见过）
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:2rem;">
+      <div class="highlight-box">
+        <h3 style="margin-bottom:0.5rem;">标注的五个维度</h3>
+        <p style="font-size:0.88rem; margin:0;">
+          ① 同理心（1–5）<br>
+          ② 有用性（1–5）<br>
+          ③ 自然性（1–5）<br>
+          ④ 安全性（1–5）<br>
+          ⑤ 整体满意度（1–5）
+        </p>
+      </div>
+      <div class="highlight-box highlight-box-blush">
+        <h3 style="margin-bottom:0.5rem; color:var(--accent-blush);">什么时候该升级到微调？</h3>
+        <p style="font-size:0.88rem; margin:0;">
+          · 用户差评率 &gt; 20%<br>
+          · AI 回应不一致 &gt; 30%<br>
+          · 竞品效果明显更好<br>
+          · Prompt 调到极限仍不够
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10: SECTION — Chain of Thought ===== -->
+<section class="slide section-slide" id="slide-10">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 04</div>
+    <h2>Chain of Thought 实战</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">让麦麦「想清楚再说话」——<br>一步步思考，回应质量提升 20%。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 11: CoT 案例 ===== -->
+<section class="slide" id="slide-11">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 04</div>
+    <h2>一个完整的 CoT 案例</h2>
+
+    <div class="card card-sage" style="margin-bottom:1.5rem;">
+      <div class="concept-label">用户输入</div>
+      <p style="font-family:'Noto Serif SC',serif; font-size:1.1rem; color:var(--text-primary); font-weight:600; margin:0;">
+        「我失业快 3 个月了，之前的公司裁员」
+      </p>
+    </div>
+
+    <div class="card" style="background:rgba(122,158,126,0.06); border-color:var(--accent-sage);">
+      <div class="concept-label" style="color:var(--accent-sage);">麦麦的 &lt;thinking&gt; 过程</div>
+      <ul class="num-list" style="margin-top:0.5rem;">
+        <li><strong>情绪识别：</strong>被裁的失落 + 3 个月失业的焦虑，可能有自我怀疑</li>
+        <li><strong>实际情况：</strong>被裁是不可控事件（公司决定），不是个人能力问题</li>
+        <li><strong>需求判断：</strong>更需要陪伴和理解，而非「去投简历」的冷建议</li>
+        <li><strong>回应策略：</strong>承认不公平 → 肯定坚持 → 给陪伴感</li>
+      </ul>
+    </div>
+
+    <div class="card card-lemon">
+      <div class="concept-label" style="color:var(--accent-lemon);">麦麦最终输出</div>
+      <p style="font-family:'Noto Serif SC',serif; font-size:1rem; color:var(--text-primary); margin:0; line-height:2;">
+        「被裁确实很无奈，这真的不是你的问题。但你能在这 3 个月里坚持，说明你很有韧性。这个群里很多人都经历过，我们一起陪伴。」
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 12: SECTION — Prompt 工程 ===== -->
+<section class="slide section-slide" id="slide-12">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 05</div>
+    <h2>Prompt 工程七大技术</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">来自 Anthropic 官方文档的核心方法论。<br>这是你现阶段最重要的技能。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 13: 七大技术 ===== -->
+<section class="slide" id="slide-13">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 05</div>
+    <h2>七大技术一览</h2>
+
+    <div class="grid-2">
+      <div class="card card-sage">
+        <h3>01 · 清晰指令</h3>
+        <p style="font-size:0.88rem; margin:0;">把 AI 当成新实习生。不说「回答要好」，而说「回应不超过 50 字，先表达同理心，再给一个建议」。</p>
+      </div>
+      <div class="card card-sage">
+        <h3>02 · Few-shot 例子</h3>
+        <p style="font-size:0.88rem; margin:0;">给 3–5 个「用户说 → 理想回应」的配对。AI 从模仿中学会你要的风格。</p>
+      </div>
+      <div class="card card-lemon">
+        <h3>03 · Chain of Thought</h3>
+        <p style="font-size:0.88rem; margin:0;">让 AI 分步思考：先识别情绪 → 再分析需求 → 最后给出回应。准确率提升 15–20%。</p>
+      </div>
+      <div class="card card-lemon">
+        <h3>04 · XML 标签结构</h3>
+        <p style="font-size:0.88rem; margin:0;">用 <code>&lt;thinking&gt;</code> <code>&lt;response&gt;</code> 等标签分隔思考过程和最终输出，结构更清晰。</p>
+      </div>
+      <div class="card card-blush">
+        <h3>05 · 角色设定</h3>
+        <p style="font-size:0.88rem; margin:0;">在 System Prompt 中定义麦麦的身份：「你是有同理心的陪伴者，不是冷冰冰的客服」。</p>
+      </div>
+      <div class="card card-blush">
+        <h3>06 · 链式提示</h3>
+        <p style="font-size:0.88rem; margin:0;">将复杂任务拆成多步：第一步识别情感类型 → 第二步选择回应策略 → 第三步生成文案。</p>
+      </div>
+    </div>
+
+    <div class="highlight-box-lemon highlight-box" style="margin-top:1rem; text-align:center;">
+      <p style="margin:0; font-size:0.92rem;"><strong>07 · 长上下文利用</strong> — 把群聊的历史对话作为上下文传入，让 AI 的回应不再是孤立的。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 14: SECTION — 行动计划 ===== -->
+<section class="slide section-slide" id="slide-14">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 06</div>
+    <h2>你的行动路线图</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">从现在到 6 个月后，<br>每个阶段该做什么、不该做什么。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 15: 路线图 ===== -->
+<section class="slide" id="slide-15">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 06</div>
+    <h2>三阶段行动计划</h2>
+
+    <div class="card card-sage" style="margin-bottom:0.8rem;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-sage);">01</span>
+        <div>
+          <h3 style="margin:0;">现在 → 3 个月：深化 Prompt + 收集数据</h3>
+        </div>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">用豆包 1.5 Lite 跑 3 个月。收集 1000+ 条用户反馈。标注 500 条数据（五维评分）。迭代 Prompt 5 个版本。目标：用户满意度 70→80 分。</p>
+    </div>
+
+    <div class="card card-lemon" style="margin-bottom:0.8rem;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-lemon);">02</span>
+        <div>
+          <h3 style="margin:0; color:var(--accent-lemon);">3–6 个月：评估是否微调</h3>
+        </div>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">条件触发：如果满意度卡在 75 分且竞品更好。执行：用 1500 条数据 LoRA 微调豆包。A/B 测试微调版本 vs Prompt 版本。</p>
+    </div>
+
+    <div class="card card-blush">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-blush);">03</span>
+        <div>
+          <h3 style="margin:0; color:var(--accent-blush);">6 个月+：自研（如果证明值得）</h3>
+        </div>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">条件触发：麦麦成为杀手级功能、留存对比 &gt;15%、竞品开始模仿。投入自研团队，用 Llama/Qwen 底座长期迭代。</p>
+    </div>
+
+    <div class="dot-divider">· · ·</div>
+
+    <div class="metric-row">
+      <div class="metric-item">
+        <div class="metric-num">80+</div>
+        <div class="metric-label">目标满意度（分）</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">&lt;10%</div>
+        <div class="metric-label">差评率目标</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">&gt;10%</div>
+        <div class="metric-label">有 AI 群 vs 无 AI 群<br>留存差异</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">1000</div>
+        <div class="metric-label">3 个月数据目标（条）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 16: SECTION — 学习清单 ===== -->
+<section class="slide section-slide" id="slide-16">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="chapter-label">Chapter 07</div>
+    <h2>你需要学的五件事</h2>
+    <p style="max-width:600px; margin:1.5rem auto 0;">按优先级排序。<br>不是都要同时学，而是分阶段攻克。</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 17: 学习清单 ===== -->
+<section class="slide" id="slide-17">
+  <div class="slide-inner">
+    <div class="chapter-label">Chapter 07</div>
+    <h2>五项核心技能</h2>
+
+    <ul class="num-list">
+      <li>
+        <strong>Prompt 工程</strong> <span class="tag tag-sage">现在就学</span><br>
+        系统提示词写法、Few-shot、Chain of Thought、Temperature 调参。Anthropic 官方文档是最好的教材。
+      </li>
+      <li>
+        <strong>数据标注与质控</strong> <span class="tag tag-sage">现在就学</span><br>
+        设计标注指南、标注员一致性评估、多维度评分体系。工具推荐：Label Studio。
+      </li>
+      <li>
+        <strong>A/B 测试设计</strong> <span class="tag tag-lemon">1 个月内</span><br>
+        样本量计算、变量控制、效应量判断。在真实群聊中对比不同 Prompt 版本的效果。
+      </li>
+      <li>
+        <strong>Benchmark 构建</strong> <span class="tag tag-lemon">1–2 个月</span><br>
+        测试集设计、人工评估 vs 自动指标、用 Benchmark 指导迭代方向。
+      </li>
+      <li>
+        <strong>Fine-tuning 基础</strong> <span class="tag tag-blush">3 个月后</span><br>
+        LoRA（轻量微调）+ Instruction Tuning（指令微调）。等数据足够了再深入。
+      </li>
+    </ul>
+
+    <div class="highlight-box" style="margin-top:1.5rem;">
+      <p style="margin:0; font-size:0.92rem;">
+        <strong>资源推荐：</strong>
+        Anthropic Prompt Engineering 官方文档 ·
+        GitHub: anthropics/prompt-eng-interactive-tutorial ·
+        Label Studio（开源标注工具）·
+        UXR Claude Skills Bundle（52 个研究 Skill）
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 18: 核心金句 ===== -->
+<section class="slide cover-slide" id="slide-18">
+  <div class="slide-inner" style="text-align:center; position:relative; z-index:1;">
+    <div class="chapter-label">Final Thought</div>
+
+    <div class="quote-block" style="text-align:left; max-width:700px; margin:2rem auto;">
+      <p style="font-size:clamp(1.1rem, 2vw, 1.35rem); line-height:2.2;">
+        真正的成功是——用户完全忘记他在和 AI 聊天，<br>
+        只觉得群聊更有趣了。
+      </p>
+    </div>
+
+    <div class="divider" style="margin:2rem auto;"></div>
+
+    <p style="color:var(--text-muted); font-size:0.95rem; line-height:2;">
+      与其问「AI 管家能做什么」，<br>
+      不如问：<strong style="color:var(--accent-sage);">「麦麦的存在，能解决 Soul 语聊社交中的哪个真实问题？」</strong>
+    </p>
+
+    <div style="margin-top:3rem; font-size:0.8rem; color:var(--text-muted);">
+      基于 Claude 对话沉淀 · Soft Editorial 风格 · 2026.05
+    </div>
+  </div>
+</section>
+
+</div><!-- end .deck -->
+
+<script>
+  // ===== Scroll Progress Bar =====
+  const progressBar = document.getElementById('progressBar');
+  const slides = document.querySelectorAll('.slide');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+
+    // Update nav dots
+    const navDots = document.querySelectorAll('.nav-dot');
+    slides.forEach((slide, i) => {
+      const rect = slide.getBoundingClientRect();
+      if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+        navDots.forEach(d => d.classList.remove('active'));
+        if (navDots[i]) navDots[i].classList.add('active');
+      }
+    });
+  });
+
+  // ===== Generate Nav Dots =====
+  const navDotsContainer = document.getElementById('navDots');
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.addEventListener('click', () => {
+      slide.scrollIntoView({ behavior: 'smooth' });
+    });
+    navDotsContainer.appendChild(dot);
+  });
+
+  // ===== Intersection Observer for Animations =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const inner = entry.target.querySelector('.slide-inner');
+        if (inner) {
+          inner.style.animation = 'none';
+          inner.offsetHeight; // trigger reflow
+          inner.style.animation = 'fadeSlideUp 0.8s ease-out both';
+        }
+      }
+    });
+  }, { threshold: 0.2 });
+
+  slides.forEach(slide => observer.observe(slide));
+
+  // ===== Keyboard Navigation =====
+  document.addEventListener('keydown', (e) => {
+    const currentSlide = [...slides].findIndex(slide => {
+      const rect = slide.getBoundingClientRect();
+      return rect.top >= -100 && rect.top < window.innerHeight / 2;
+    });
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const next = Math.min(currentSlide + 1, slides.length - 1);
+      slides[next].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prev = Math.max(currentSlide - 1, 0);
+      slides[prev].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
