@@ -29,6 +29,12 @@ nav{width:100%;background:var(--bg2);border-bottom:1px solid var(--border);displ
 .screen.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+.plaza-mode-switch{display:inline-flex;gap:4px;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:16px;border:1px solid var(--border)}
+.plaza-mode-btn{padding:7px 12px;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:.15s}
+.plaza-mode-btn.active{background:var(--bg2);color:var(--p);box-shadow:0 1px 4px rgba(83,74,183,.12)}
+.plaza-pane{display:none}
+.plaza-pane.active{display:block}
+
 /* ── PLAZA ── */
 .plaza-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .plaza-top h2{font-size:18px;font-weight:600;color:var(--text)}
@@ -170,6 +176,39 @@ nav{width:100%;background:var(--bg2);border-bottom:1px solid var(--border);displ
 
 /* section label */
 .sec-label{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:12px;margin-top:4px}
+
+/* fused plaza catalog */
+.fusion-section-title{font-size:12px;font-weight:500;color:var(--text3);margin-bottom:14px;letter-spacing:.8px;text-transform:uppercase}
+.fusion-filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.fusion-filter-btn{padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--bg2);color:var(--text2);transition:.15s}
+.fusion-filter-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.fusion-featured-banner{border-radius:16px;padding:20px 24px;margin-bottom:24px;cursor:pointer;position:relative;overflow:hidden}
+.fusion-featured-banner h2{font-size:19px;color:#fff;margin-bottom:5px;font-weight:600}
+.fusion-featured-banner p{font-size:13px;color:rgba(255,255,255,.7)}
+.fusion-featured-badge{display:inline-block;background:rgba(255,255,255,.2);color:#fff;font-size:11px;padding:3px 10px;border-radius:10px;margin-bottom:10px}
+.fusion-featured-icon-big{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.18}
+.fusion-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:14px}
+.fusion-card{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:.2s;user-select:none}
+.fusion-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(83,74,183,.1)}
+.fusion-card:active{transform:scale(.98);opacity:.9}
+.fusion-card-top{padding:18px 16px 14px;position:relative}
+.fusion-card-icon{font-size:26px;margin-bottom:10px;display:block}
+.fusion-card-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.fusion-card-sub{font-size:11px;opacity:.72}
+.fusion-hot-badge{position:absolute;top:10px;right:10px;font-size:9px;padding:2px 7px;border-radius:8px;color:#fff;font-weight:600}
+.fusion-verified-badge{font-size:10px;color:var(--p);margin-left:4px}
+.fusion-card-bottom{padding:9px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);background:var(--bg2)}
+.fusion-card-meta{font-size:11px;color:var(--text2)}
+.fusion-card-meta small{display:block;color:var(--text3);margin-top:1px}
+.fusion-collect-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s;flex-shrink:0}
+.fusion-collect-btn.saved{background:var(--p);border-color:var(--p);color:#fff}
+.fusion-creator-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;font-weight:600;color:#fff}
+.fusion-creator-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.fusion-creator-tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.fusion-char-avatar{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px}
+.fusion-official-label{font-size:9px;padding:1px 6px;border-radius:5px;font-weight:600;display:inline-block;margin-top:4px}
+.fusion-lumi-card-top{background:linear-gradient(135deg,#1A1730,#534AB7,#7F77DD,#AFA9EC,#534AB7);background-size:300% 300%;animation:lumiFlow 5s ease infinite;padding:18px 16px 14px;position:relative}
+.fusion-lumi-tag{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border-radius:10px;font-size:10px;padding:2px 8px}
 </style>
 </head>
 <body>
@@ -189,11 +228,28 @@ nav{width:100%;background:var(--bg2);border-bottom:1px solid var(--border);displ
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
     <div>
       <h2 style="font-size:17px;font-weight:600;color:var(--text)">牌灵广场</h2>
-      <div style="font-size:11px;color:var(--text3);margin-top:2px">用户发帖 · 卡牌流通 · UGC创作生态</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">用户发帖 · 卡牌流通 · UGC创作生态 · 卡牌目录并行展示</div>
     </div>
     <button onclick="showScreen('create')" style="font-size:12px;padding:7px 14px;border-radius:9px;background:var(--p);color:#fff;border:none;cursor:pointer;font-weight:500">+ 创作牌灵</button>
   </div>
-  <div id="plaza-feed" style="columns:2;column-gap:12px;max-width:900px"></div>
+  <div class="plaza-mode-switch" id="plaza-mode-switch">
+    <button class="plaza-mode-btn active" onclick="setPlazaMode('feed')">动态流</button>
+    <button class="plaza-mode-btn" onclick="setPlazaMode('catalog')">首屏卡牌广场</button>
+  </div>
+  <div class="plaza-pane active" id="plaza-pane-feed">
+    <div id="plaza-feed" style="columns:2;column-gap:12px;max-width:900px"></div>
+  </div>
+  <div class="plaza-pane" id="plaza-pane-catalog">
+    <div class="fusion-section-title">牌灵广场</div>
+    <div class="fusion-featured-banner" style="background:linear-gradient(135deg,#D4537E,#993556)" onclick="showToast('正在打开达人牌灵：@深夜絮语')">
+      <span class="fusion-featured-badge">✦ 本周最热</span>
+      <h2>@深夜絮语 · 情感达人牌灵</h2>
+      <p>凌晨三点的对话，比白天真实十倍 · 3.8k人收藏</p>
+      <span class="fusion-featured-icon-big">🌙</span>
+    </div>
+    <div class="fusion-filter-row" id="fusion-filter-row"></div>
+    <div class="fusion-card-grid" id="fusion-card-grid"></div>
+  </div>
 </div>
 
 <!-- ────────── CHAT ────────── -->
@@ -328,6 +384,23 @@ const lumiData={
   posts:'312',likes:'8.4k',
 };
 
+const fusionCards = [
+  {id:'fs1',type:'技能',name:'骰子话题',emoji:'🎲',sub:'破冰类',uses:'2.3k',creator:'@小熊不睡',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',hot:true},
+  {id:'fs2',type:'技能',name:'群内投票',emoji:'🗳️',sub:'决策类',uses:'1.8k',creator:'@产品喵',color:'#1D9E75',bg:'#E1F5EE',tc:'#04342C',hot:false},
+  {id:'fs3',type:'技能',name:'匿名吐槽',emoji:'💬',sub:'决策类',uses:'3.1k',creator:'@蘑菇云',color:'#D85A30',bg:'#FAECE7',tc:'#4A1B0C',hot:true},
+  {id:'fs4',type:'技能',name:'今日能量',emoji:'☀️',sub:'氛围类',uses:'892',creator:'@光合作用',color:'#BA7517',bg:'#FAEEDA',tc:'#412402',hot:false},
+  {id:'fc1',type:'达人',name:'@深夜絮语',emoji:'🌙',tagline:'凌晨三点的对话，比白天真实十倍',tags:['情感','治愈','深夜'],voice:'温柔·直击要害',uses:'3.8k',color:'#D4537E',bg:'#FBEAF0',tc:'#4B1528',hot:true,verified:true},
+  {id:'fc2',type:'达人',name:'@MBTI观察室',emoji:'🧠',tagline:'你的MBTI只是入口，往深了说才好玩',tags:['MBTI','心理','人格'],voice:'犀利·反直觉洞察',uses:'2.6k',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',hot:false,verified:true},
+  {id:'fc3',type:'达人',name:'@城市边缘人',emoji:'🚶',tagline:'专门去每个城市找没人去的地方',tags:['城市','漫游','摄影'],voice:'文艺·松弛·有点丧',uses:'1.9k',color:'#2E8B57',bg:'#E8F5EE',tc:'#1A3D29',hot:false,verified:false},
+  {id:'fr1',type:'角色',name:'凌希',emoji:'🌸',tagline:'每个失眠的夜晚都值得被好好对待',personality:'温柔·有距离感的亲近',uses:'5.2k',color:'#D4537E',bg:'#FBEAF0',tc:'#4B1528',official:true,hot:true},
+  {id:'fr2',type:'角色',name:'方糖',emoji:'🍬',tagline:'你已经很努力了，但我还是要催你',personality:'温柔督促·自律搭档',uses:'3.4k',color:'#1D9E75',bg:'#E1F5EE',tc:'#04342C',official:true,hot:false},
+  {id:'fr3',type:'角色',name:'木木',emoji:'🌵',tagline:'我说话直，但我说的是真的',personality:'毒舌·反鸡汤·真实',uses:'2.1k',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',official:false,hot:false},
+  {id:'fl1',type:'分身',name:'Lumi',emoji:'✨',tagline:'这是我的闪光名片',chips:['独立思考','深夜聊天','城市漫游','INFP'],uses:'—',color:'#534AB7',bg:'linear-gradient(135deg,#534AB7,#7F77DD)',tc:'#fff'}
+];
+
+const fusionTabs = ['全部','技能','达人','角色','分身'];
+let fusionActiveTab = '全部';
+let plazaMode = 'feed';
 const subFilters=['全部','技能','达人','角色'];
 let activeSF='全部';
 let saved=new Set([1,'k1','k2','c2']);
@@ -461,8 +534,114 @@ function likePost(id){
   renderPlaza();
 }
 
+function setPlazaMode(mode){
+  plazaMode=mode;
+  document.querySelectorAll('.plaza-mode-btn').forEach((btn,idx)=>{
+    btn.classList.toggle('active',(mode==='feed'&&idx===0)||(mode==='catalog'&&idx===1));
+  });
+  document.getElementById('plaza-pane-feed').classList.toggle('active',mode==='feed');
+  document.getElementById('plaza-pane-catalog').classList.toggle('active',mode==='catalog');
+  if(mode==='catalog') renderFusionCatalog();
+}
+
+function renderFusionCatalog(){
+  renderFusionFilters();
+  renderFusionCards();
+}
+
+function renderFusionFilters(){
+  const row=document.getElementById('fusion-filter-row');
+  if(!row) return;
+  row.innerHTML=fusionTabs.map(t=>
+    `<button class="fusion-filter-btn ${t===fusionActiveTab?'active':''}" onclick="setFusionTab('${t}')">${t}</button>`
+  ).join('');
+}
+
+function setFusionTab(tab){
+  fusionActiveTab=tab;
+  renderFusionCatalog();
+}
+
+function renderFusionCards(){
+  const grid=document.getElementById('fusion-card-grid');
+  if(!grid) return;
+  const cards=fusionActiveTab==='全部' ? fusionCards : fusionCards.filter(card=>card.type===fusionActiveTab);
+  grid.innerHTML = cards.length ? cards.map(card=>{
+    if(card.type==='技能') return fusionSkillCard(card);
+    if(card.type==='达人') return fusionCreatorCard(card);
+    if(card.type==='角色') return fusionCharacterCard(card);
+    return fusionLumiCard(card);
+  }).join('') : '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text3);font-size:14px">暂无该分类牌灵</div>';
+}
+
+function toggleFusionSave(id){
+  showToast(`已将 ${id==='fl1'?'Lumi':fusionCards.find(card=>card.id===id)?.name||'牌灵'} 同步到牌灵库 🃏`);
+}
+
+function fusionSkillCard(card){return `
+  <div class="fusion-card" onclick="toggleFusionSave('${card.id}')">
+    <div class="fusion-card-top" style="background:${card.bg}">
+      ${card.hot?`<div class="fusion-hot-badge" style="background:${card.color}">热门</div>`:''}
+      <span class="fusion-card-icon">${card.emoji}</span>
+      <div class="fusion-card-name" style="color:${card.tc}">${card.name}</div>
+      <div class="fusion-card-sub" style="color:${card.color}">${card.sub}</div>
+    </div>
+    <div class="fusion-card-bottom">
+      <div class="fusion-card-meta">${card.creator}<small>⚡ ${card.uses}次</small></div>
+      <div class="fusion-collect-btn">+</div>
+    </div>
+  </div>`;}
+
+function fusionCreatorCard(card){
+  return `
+  <div class="fusion-card" onclick="toggleFusionSave('${card.id}')">
+    <div class="fusion-card-top" style="background:${card.bg}">
+      ${card.hot?`<div class="fusion-hot-badge" style="background:${card.color}">热门</div>`:''}
+      <div class="fusion-creator-avatar" style="background:${card.color}">${card.emoji}</div>
+      <div class="fusion-card-name" style="color:${card.tc}">${card.name}${card.verified?'<span class="fusion-verified-badge">✓认证</span>':''}</div>
+      <div style="font-size:11px;color:${card.color};margin-bottom:6px">${card.voice}</div>
+      <div class="fusion-creator-tags">${card.tags.map(tag=>`<span class="fusion-creator-tag" style="background:${card.bg};color:${card.color}">${tag}</span>`).join('')}</div>
+    </div>
+    <div class="fusion-card-bottom">
+      <div class="fusion-card-meta" style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${card.tagline}<small>⚡ ${card.uses}次召唤</small></div>
+      <div class="fusion-collect-btn">+</div>
+    </div>
+  </div>`;}
+
+function fusionCharacterCard(card){return `
+  <div class="fusion-card" onclick="toggleFusionSave('${card.id}')">
+    <div class="fusion-card-top" style="background:${card.bg}">
+      ${card.hot?`<div class="fusion-hot-badge" style="background:${card.color}">热门</div>`:''}
+      <div class="fusion-char-avatar" style="background:${card.bg};border:2px solid ${card.color}">${card.emoji}</div>
+      <div class="fusion-card-name" style="color:${card.tc}">${card.name}</div>
+      <div style="font-size:11px;color:${card.color};margin-bottom:4px">${card.personality}</div>
+      ${card.official?`<span class="fusion-official-label" style="background:${card.color};color:#fff">Soul官方</span>`:`<span class="fusion-official-label" style="background:var(--border);color:var(--text3)">用户创作</span>`}
+    </div>
+    <div class="fusion-card-bottom">
+      <div class="fusion-card-meta">${card.tagline.slice(0,18)}…<small>⚡ ${card.uses}次</small></div>
+      <div class="fusion-collect-btn">+</div>
+    </div>
+  </div>`;}
+
+function fusionLumiCard(card){return `
+  <div class="fusion-card" onclick="toggleFusionSave('${card.id}')">
+    <div class="fusion-lumi-card-top">
+      <span style="font-size:28px;display:block;margin-bottom:8px">${card.emoji}</span>
+      <div style="font-size:14px;font-weight:700;color:#fff">${card.name}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:8px">我的数字分身</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        ${card.chips.map(chip=>`<span class="fusion-lumi-tag">${chip}</span>`).join('')}
+      </div>
+    </div>
+    <div class="fusion-card-bottom">
+      <div class="fusion-card-meta">召唤丢出闪光名片<small>⚡ 仅限我使用</small></div>
+      <div class="fusion-collect-btn saved">✓</div>
+    </div>
+  </div>`;}
+
 function renderPlaza(){
   document.getElementById('plaza-feed').innerHTML=feedPosts.map(p=>feedCardHTML(p)).join('');
+  if(plazaMode==='catalog') renderFusionCatalog();
 }
 
 // renderCharGrid removed
@@ -849,7 +1028,7 @@ function showScreen(name){
   ['plaza','chat','create'].forEach((n,i)=>{if(n===name)document.querySelectorAll('.nav-tab')[i].classList.add('active');});
   if(name==='create'){cStep=1;cTpl=0;renderCreate();}
   if(name==='chat'){renderChatMsgs();renderDeckMini();}
-  if(name==='plaza'){renderPlaza();}
+  if(name==='plaza'){renderPlaza();setPlazaMode(plazaMode);}
 }
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -858,7 +1037,7 @@ function showToast(msg){
 }
 
 // ── INIT ──
-renderPlaza();renderChatMsgs();renderDeckMini();renderCreate();
+renderPlaza();setPlazaMode(plazaMode);renderChatMsgs();renderDeckMini();renderCreate();
 </script>
 </body>
 </html>
