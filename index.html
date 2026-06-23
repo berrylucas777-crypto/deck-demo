@@ -1,1172 +1,864 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI+业务型产品经理知识图谱 — Soul语聊房AI管家实战沉淀</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AI 牌灵 — 你的 UGC 收藏工具包</title>
 <style>
-  :root {
-    --bg-warm: #f7f3ed;
-    --bg-card: #fffdf9;
-    --text-primary: #2c2420;
-    --text-secondary: #6b5e54;
-    --text-muted: #9a8e84;
-    --accent-sage: #7a9e7e;
-    --accent-sage-light: #d4e6d6;
-    --accent-blush: #c4868b;
-    --accent-blush-light: #f2dfe0;
-    --accent-lemon: #d4b946;
-    --accent-lemon-light: #f5edc8;
-    --accent-ink: #3a3330;
-    --border-light: #e8e0d6;
-    --shadow-soft: 0 2px 20px rgba(44, 36, 32, 0.06);
-    --shadow-card: 0 4px 30px rgba(44, 36, 32, 0.08);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Noto Sans SC', sans-serif;
-    background: var(--bg-warm);
-    color: var(--text-primary);
-    line-height: 1.8;
-    font-weight: 400;
-    overflow-x: hidden;
-  }
-
-  /* ===== SLIDE CONTAINER ===== */
-  .deck {
-    width: 100%;
-    min-height: 100vh;
-  }
-
-  .slide {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .slide-inner {
-    max-width: 900px;
-    width: 100%;
-    animation: fadeSlideUp 0.8s ease-out both;
-  }
-
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== TYPOGRAPHY ===== */
-  .serif { font-family: 'Noto Serif SC', 'Cormorant Garamond', serif; }
-  .display { font-family: 'Cormorant Garamond', 'Noto Serif SC', serif; }
-
-  h1 {
-    font-family: 'Noto Serif SC', serif;
-    font-weight: 900;
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    line-height: 1.3;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-  }
-
-  h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-weight: 700;
-    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-    line-height: 1.4;
-    color: var(--text-primary);
-    margin-bottom: 1.2rem;
-  }
-
-  h3 {
-    font-family: 'Noto Serif SC', serif;
-    font-weight: 600;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    color: var(--accent-sage);
-    margin-bottom: 0.6rem;
-    letter-spacing: 0.02em;
-  }
-
-  p {
-    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-  }
-
-  .lead {
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-    color: var(--text-secondary);
-    font-weight: 300;
-    line-height: 2;
-  }
-
-  /* ===== DECORATIVE ELEMENTS ===== */
-  .chapter-label {
-    display: inline-block;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-sage);
-    border: 1.5px solid var(--accent-sage);
-    padding: 4px 16px;
-    border-radius: 20px;
-    margin-bottom: 1.5rem;
-  }
-
-  .divider {
-    width: 60px;
-    height: 2px;
-    background: var(--accent-sage);
-    margin: 2rem 0;
-    opacity: 0.6;
-  }
-
-  .dot-divider {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 1.2rem;
-    letter-spacing: 0.8em;
-    margin: 2rem 0;
-  }
-
-  /* ===== CARDS ===== */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    padding: 28px 32px;
-    box-shadow: var(--shadow-soft);
-    margin-bottom: 1.2rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-card);
-  }
-
-  .card-sage { border-left: 4px solid var(--accent-sage); }
-  .card-blush { border-left: 4px solid var(--accent-blush); }
-  .card-lemon { border-left: 4px solid var(--accent-lemon); }
-
-  /* ===== TAGS ===== */
-  .tag {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 3px 12px;
-    border-radius: 20px;
-    margin: 2px 4px 2px 0;
-  }
-
-  .tag-sage { background: var(--accent-sage-light); color: #4a6e4e; }
-  .tag-blush { background: var(--accent-blush-light); color: #8a4a4f; }
-  .tag-lemon { background: var(--accent-lemon-light); color: #7a6a20; }
-
-  /* ===== COMPARISON TABLE ===== */
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.92rem;
-  }
-
-  .compare-table th {
-    font-family: 'Noto Serif SC', serif;
-    font-weight: 600;
-    text-align: left;
-    padding: 14px 18px;
-    background: var(--accent-sage-light);
-    color: var(--text-primary);
-    border-bottom: 2px solid var(--accent-sage);
-    font-size: 0.85rem;
-    letter-spacing: 0.03em;
-  }
-
-  .compare-table td {
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--border-light);
-    vertical-align: top;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  .compare-table tr:last-child td { border-bottom: none; }
-  .compare-table tr:hover td { background: rgba(122, 158, 126, 0.04); }
-
-  /* ===== FLOW DIAGRAM ===== */
-  .flow-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 2rem 0;
-  }
-
-  .flow-step {
-    background: var(--bg-card);
-    border: 1.5px solid var(--border-light);
-    border-radius: 10px;
-    padding: 14px 20px;
-    text-align: center;
-    min-width: 120px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-
-  .flow-step:hover {
-    border-color: var(--accent-sage);
-    background: var(--accent-sage-light);
-  }
-
-  .flow-arrow {
-    color: var(--accent-sage);
-    font-size: 1.2rem;
-    font-weight: 300;
-  }
-
-  .flow-step .step-num {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--accent-sage);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  /* ===== QUOTE BLOCK ===== */
-  .quote-block {
-    position: relative;
-    padding: 28px 32px;
-    background: var(--bg-card);
-    border-radius: 12px;
-    margin: 2rem 0;
-    border: 1px solid var(--border-light);
-  }
-
-  .quote-block::before {
-    content: '"';
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 5rem;
-    color: var(--accent-sage-light);
-    position: absolute;
-    top: -10px;
-    left: 16px;
-    line-height: 1;
-  }
-
-  .quote-block p {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    font-weight: 600;
-    line-height: 1.9;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ===== NUMBERED LIST ===== */
-  .num-list { list-style: none; counter-reset: item; }
-
-  .num-list li {
-    counter-increment: item;
-    padding: 12px 0 12px 50px;
-    position: relative;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    border-bottom: 1px solid var(--border-light);
-  }
-
-  .num-list li:last-child { border-bottom: none; }
-
-  .num-list li::before {
-    content: counter(item, decimal-leading-zero);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--accent-sage);
-    position: absolute;
-    left: 0;
-    top: 8px;
-  }
-
-  .num-list li strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  /* ===== GRID LAYOUT ===== */
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-  }
-
-  .grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .slide { padding: 40px 20px; }
-    .flow-container { flex-direction: column; }
-    .flow-arrow { transform: rotate(90deg); }
-  }
-
-  /* ===== COVER SLIDE ===== */
-  .cover-slide {
-    background: linear-gradient(170deg, #f7f3ed 0%, #ede7dd 40%, #e8ddd0 100%);
-    position: relative;
-  }
-
-  .cover-slide::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(122,158,126,0.12) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .cover-slide::after {
-    content: '';
-    position: absolute;
-    bottom: -80px;
-    left: -80px;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(196,134,139,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .cover-meta {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-
-  .cover-subtitle {
-    font-family: 'Noto Serif SC', serif;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--accent-sage);
-    font-weight: 600;
-    margin-top: 1.5rem;
-    line-height: 1.8;
-  }
-
-  .cover-footer {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-light);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-  }
-
-  /* ===== SECTION DIVIDER ===== */
-  .section-slide {
-    background: var(--accent-ink);
-    color: var(--bg-warm);
-  }
-
-  .section-slide h2 {
-    color: var(--bg-warm);
-    font-size: clamp(2rem, 4.5vw, 3rem);
-  }
-
-  .section-slide .chapter-label {
-    color: var(--accent-sage-light);
-    border-color: var(--accent-sage-light);
-  }
-
-  .section-slide p {
-    color: rgba(247, 243, 237, 0.7);
-    font-size: 1.1rem;
-  }
-
-  /* ===== HIGHLIGHT BOX ===== */
-  .highlight-box {
-    background: linear-gradient(135deg, var(--accent-sage-light), rgba(212, 230, 214, 0.3));
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin: 1.5rem 0;
-  }
-
-  .highlight-box-blush {
-    background: linear-gradient(135deg, var(--accent-blush-light), rgba(242, 223, 224, 0.3));
-  }
-
-  .highlight-box-lemon {
-    background: linear-gradient(135deg, var(--accent-lemon-light), rgba(245, 237, 200, 0.3));
-  }
-
-  /* ===== PROGRESS BAR ===== */
-  .progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-sage), var(--accent-blush));
-    z-index: 100;
-    transition: width 0.15s ease-out;
-  }
-
-  /* ===== NAV DOTS ===== */
-  .nav-dots {
-    position: fixed;
-    right: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 99;
-  }
-
-  .nav-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border-light);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-  }
-
-  .nav-dot.active {
-    background: var(--accent-sage);
-    transform: scale(1.4);
-  }
-
-  .nav-dot:hover { background: var(--accent-blush); }
-
-  @media (max-width: 768px) {
-    .nav-dots { display: none; }
-  }
-
-  /* ===== CONCEPT PAIR ===== */
-  .concept-pair {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    margin: 1.5rem 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border-light);
-  }
-
-  .concept-left {
-    flex: 1;
-    padding: 24px;
-    background: var(--bg-card);
-  }
-
-  .concept-right {
-    flex: 1;
-    padding: 24px;
-    background: var(--accent-sage-light);
-  }
-
-  .concept-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  /* ===== ICON METRIC ===== */
-  .metric-row {
-    display: flex;
-    gap: 1rem;
-    margin: 1.5rem 0;
-    flex-wrap: wrap;
-  }
-
-  .metric-item {
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-    padding: 20px 16px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-  }
-
-  .metric-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--accent-sage);
-    line-height: 1;
-  }
-
-  .metric-label {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-top: 6px;
-  }
-
-  /* ===== INLINE CODE ===== */
-  code {
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 0.85em;
-    background: rgba(122, 158, 126, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    color: var(--accent-sage);
-  }
-
-  /* ===== FOOTER ===== */
-  .slide-footer {
-    position: absolute;
-    bottom: 24px;
-    left: 40px;
-    right: 40px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p:#534AB7;--pl:#EEEDFE;--pd:#26215C;--pm:#7F77DD;
+  --teal:#1D9E75;--teal-l:#E1F5EE;--teal-d:#04342C;
+  --coral:#D85A30;--coral-l:#FAECE7;
+  --amber:#BA7517;--amber-l:#FAEEDA;
+  --pink:#D4537E;--pink-l:#FBEAF0;
+  --blue:#185FA5;--blue-l:#E6F1FB;
+  --bg:#F4F3FB;--bg2:#fff;--border:#E4E2F5;
+  --text:#1A1730;--text2:#6B6899;--text3:#A8A5C8;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+nav{width:100%;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:54px;position:sticky;top:0;z-index:200}
+.nav-logo{font-size:16px;font-weight:700;color:var(--p);display:flex;align-items:center;gap:6px}
+.nav-logo .sub{font-size:11px;font-weight:400;color:var(--text3);white-space:nowrap}
+.nav-tabs{display:flex;gap:2px;background:var(--bg);border-radius:10px;padding:3px}
+.nav-tab{padding:5px 14px;border-radius:7px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--text2);transition:.15s;white-space:nowrap}
+.nav-tab.active{background:var(--bg2);color:var(--p);font-weight:500;box-shadow:0 1px 4px rgba(83,74,183,.15)}
+
+.screen{display:none;width:100%;max-width:980px;padding:20px 14px 80px;animation:fadeUp .2s}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── PLAZA ── */
+.plaza-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.plaza-top h2{font-size:18px;font-weight:600;color:var(--text)}
+.sub-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.sf-btn{padding:5px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--bg2);color:var(--text2);transition:.15s}
+.sf-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+/* skill cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:28px}
+.skill-card{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:.2s}
+.skill-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(83,74,183,.1)}
+.skill-card:active{transform:scale(.98)}
+.sc-top{padding:16px 14px 12px;position:relative}
+.sc-icon{font-size:26px;margin-bottom:8px;display:block}
+.sc-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.sc-cat{font-size:10px;opacity:.75}
+.hot-badge{position:absolute;top:9px;right:9px;font-size:9px;padding:2px 7px;border-radius:8px;color:#fff;font-weight:500}
+.sc-bottom{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)}
+.sc-meta{font-size:10px;color:var(--text2)}
+.sc-meta small{display:block;color:var(--text3);margin-top:1px}
+.collect-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s}
+.collect-btn.on{background:var(--p);border-color:var(--p)}
+
+/* KOL cards */
+.kol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px}
+.kol-card{border-radius:16px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:.2s}
+.kol-card:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(83,74,183,.12)}
+.kol-card:active{transform:scale(.99)}
+.kol-header{padding:18px 16px 14px;position:relative}
+.kol-avatar{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;margin-bottom:10px}
+.kol-name-row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.kol-name{font-size:15px;font-weight:700}
+.verified-badge{font-size:9px;padding:2px 7px;border-radius:6px;color:#fff;font-weight:500;flex-shrink:0}
+.kol-handle{font-size:11px;color:var(--text3);margin-bottom:8px}
+.kol-tagline{font-size:13px;font-weight:500;margin-bottom:10px}
+.kol-quote{font-size:12px;color:var(--text2);line-height:1.6;background:var(--bg);border-radius:8px;padding:9px 11px;border-left:2px solid;margin-bottom:10px}
+.kol-tags{display:flex;gap:5px;flex-wrap:wrap}
+.kol-tag{font-size:10px;padding:3px 8px;border-radius:8px;font-weight:500}
+.kol-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.kol-stats{font-size:11px;color:var(--text3)}
+.deploy-btn{font-size:12px;padding:6px 14px;border-radius:9px;font-weight:500;cursor:pointer;border:none;transition:.15s;color:#fff}
+.deploy-btn:active{opacity:.85}
+
+/* Character cards */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:28px}
+.char-card{border-radius:14px;border:1px solid var(--border);overflow:hidden;background:var(--bg2);cursor:pointer;transition:.2s}
+.char-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(83,74,183,.1)}
+.char-top{padding:16px 14px 12px}
+.char-icon-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.char-avatar{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-size:15px;font-weight:700}
+.char-origin{font-size:10px;margin-top:1px}
+.char-tagline{font-size:12px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+.char-persona{font-size:11px;color:var(--text3);line-height:1.6;background:var(--bg);border-radius:8px;padding:8px 10px}
+.char-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+
+/* ── CHAT SCREEN ── */
+.chat-layout{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:680px){.chat-layout{grid-template-columns:1fr}}
+.phone{background:var(--bg2);border-radius:26px;overflow:hidden;border:1px solid var(--border);box-shadow:0 16px 48px rgba(83,74,183,.12);max-width:320px;display:flex;flex-direction:column;position:relative;min-height:580px}
+.chat-header-bar{display:flex;align-items:center;gap:9px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.chat-group-av{width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.chat-msgs{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;min-height:300px;max-height:340px}
+.msg-row{display:flex;align-items:flex-end;gap:7px}
+.msg-row.me{flex-direction:row-reverse}
+.msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;flex-shrink:0}
+.bubble{padding:8px 11px;border-radius:11px;font-size:13px;line-height:1.5;background:var(--bg);border:1px solid var(--border);color:var(--text);max-width:185px}
+.bubble.me{background:var(--p);color:#fff;border-color:transparent}
+.chat-input-bar{display:flex;align-items:center;gap:7px;padding:9px 11px;border-top:1px solid var(--border)}
+.deck-icon-btn{width:34px;height:34px;border-radius:9px;background:var(--pl);border:1px solid #CECBF6;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;transition:.15s;flex-shrink:0}
+.deck-icon-btn:hover{background:var(--p)}
+.fake-input{flex:1;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;padding:0 10px}
+.fake-input span{font-size:12px;color:var(--text3)}
+.send-btn-chat{width:34px;height:34px;border-radius:9px;background:var(--p);border:none;color:#fff;cursor:pointer;font-size:14px;flex-shrink:0}
+
+/* Deck overlay */
+.deck-overlay{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-radius:16px 16px 0 0;border-top:1px solid var(--border);padding:0 10px 14px;transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);z-index:50}
+.deck-handle{width:28px;height:3px;border-radius:2px;background:var(--border);margin:9px auto 12px}
+.deck-overlay-title{font-size:13px;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.deck-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.deck-mini{border-radius:10px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:.15s;background:var(--bg2)}
+.deck-mini:hover{border-color:var(--p)}
+.deck-mini:active{transform:scale(.95)}
+.deck-mini-top{padding:9px 7px 7px;text-align:center;font-size:18px}
+.deck-mini-label{font-size:10px;text-align:center;padding:4px 4px 6px;font-weight:500;color:var(--text);line-height:1.2}
+
+/* Deployed cards in chat */
+.vote-card-chat,.kol-msg-card,.lumi-card,.char-msg-card{border-radius:14px;border:1px solid var(--border);overflow:hidden;max-width:215px}
+.card-header-strip{padding:10px 12px 8px;display:flex;align-items:center;gap:7px}
+.card-header-strip .chip{font-size:9px;margin-left:auto;border:1px solid currentColor;padding:1px 5px;border-radius:5px}
+.vote-opts-area{padding:9px 12px;display:flex;flex-direction:column;gap:6px}
+.vote-opt-row{cursor:pointer}
+.vote-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;color:var(--text)}
+.vote-bar{height:4px;border-radius:2px;background:var(--border)}
+.vote-fill{height:100%;border-radius:2px;transition:width .4s}
+.card-footer-strip{padding:5px 12px 9px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.card-act-btn{font-size:11px;padding:3px 9px;border-radius:7px;border:none;cursor:pointer;color:#fff;font-weight:500}
+
+/* Lumi 闪光名片 */
+.lumi-card{background:linear-gradient(135deg,#26215C,#534AB7,#7F77DD);border:none;color:#fff;position:relative;overflow:hidden}
+.lumi-shimmer{position:absolute;top:-40px;left:-60px;width:160px;height:220px;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);animation:shimmer 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes shimmer{0%{transform:translateX(-80px) rotate(10deg)}100%{transform:translateX(320px) rotate(10deg)}}
+.lumi-inner{padding:14px;position:relative;z-index:1}
+.lumi-badge{font-size:9px;color:#CECBF6;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+.lumi-badge::before{content:'✦';font-size:9px}
+.lumi-name{font-size:16px;font-weight:700;color:#fff;margin-bottom:2px}
+.lumi-handle{font-size:11px;color:#AFA9EC;margin-bottom:10px}
+.lumi-quote{font-size:12px;color:#CECBF6;line-height:1.6;margin-bottom:10px;font-style:italic}
+.lumi-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.lumi-tag{font-size:10px;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.15);color:#EEEDFE}
+.lumi-stats{display:flex;gap:12px;margin-bottom:10px}
+.lumi-stat{font-size:10px;color:#AFA9EC;text-align:center}
+.lumi-stat strong{display:block;font-size:14px;color:#fff;font-weight:600}
+.lumi-cta{width:100%;padding:8px;border-radius:9px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;font-weight:500;cursor:pointer;transition:.15s}
+.lumi-cta:hover{background:rgba(255,255,255,.3)}
+.lumi-mbti{display:inline-block;background:rgba(255,255,255,.2);color:#CECBF6;font-size:10px;padding:2px 8px;border-radius:6px;margin-bottom:8px}
+
+/* KOL message card */
+.kol-msg-card{background:var(--bg2)}
+.kol-msg-header{padding:10px 12px 8px;border-bottom:1px solid var(--border)}
+.kol-msg-id{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.kol-msg-av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.kol-msg-name{font-size:12px;font-weight:600;color:var(--text)}
+.kol-v{font-size:9px;padding:1px 5px;border-radius:5px;color:#fff;margin-left:2px}
+.kol-msg-body{padding:9px 12px;font-size:12px;color:var(--text2);line-height:1.6}
+
+/* explain panel */
+.explain-panel{background:var(--bg2);border-radius:16px;padding:22px;border:1px solid var(--border)}
+.explain-panel h3{font-size:15px;font-weight:600;margin-bottom:14px}
+.flow-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:13px}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--pl);color:var(--p);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-txt{font-size:12px;line-height:1.6;color:var(--text2)}
+.step-txt strong{color:var(--text);font-weight:500}
+.tip-box{margin-top:16px;background:var(--pl);border-radius:9px;padding:11px 13px;font-size:12px;color:var(--p);border:1px solid #CECBF6;line-height:1.6}
+
+/* toast */
+.toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A1730;color:#fff;padding:9px 18px;border-radius:9px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* section label */
+.sec-label{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:12px;margin-top:4px}
 </style>
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
-
-<nav class="nav-dots" id="navDots"></nav>
-
-<div class="deck">
-
-<!-- ===== SLIDE 01: COVER ===== -->
-<section class="slide cover-slide" id="slide-1">
-  <div class="slide-inner" style="position:relative; z-index:1;">
-    <div class="cover-meta">Knowledge Deck · May 2026</div>
-    <h1>AI + 业务型<br>产品经理知识图谱</h1>
-    <div class="cover-subtitle">
-      Soul 语聊房 AI 管家「麦麦」实战沉淀<br>
-      从 Prompt 工程到模型微调的完整认知框架
-    </div>
-    <div class="cover-footer">
-      <span>基于三轮深度对话提炼</span>
-      <span>共 10 个核心知识模块</span>
-    </div>
+<nav>
+  <div class="nav-logo">AI 牌灵 <span class="sub">你的 UGC 收藏工具包</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showScreen('plaza')">🃏 广场</button>
+    <button class="nav-tab" onclick="showScreen('chat')">💬 群聊召唤</button>
+    <button class="nav-tab" onclick="showScreen('create')">✦ 创作</button>
   </div>
-</section>
+  <div style="font-size:11px;color:var(--text3)">Soul 原创营</div>
+</nav>
 
-<!-- ===== SLIDE 02: SECTION — 角色定位 ===== -->
-<section class="slide section-slide" id="slide-2">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 01</div>
-    <h2>你是哪一类 AI 产品经理？</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">两条路径，两种打法，两套交付物。<br>先搞清楚自己在哪条路上。</p>
+<!-- ────────── PLAZA ────────── -->
+<div class="screen active" id="screen-plaza">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div>
+      <h2 style="font-size:17px;font-weight:600;color:var(--text)">牌灵广场</h2>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">用户发帖 · 卡牌流通 · UGC创作生态</div>
+    </div>
+    <button onclick="showScreen('create')" style="font-size:12px;padding:7px 14px;border-radius:9px;background:var(--p);color:#fff;border:none;cursor:pointer;font-weight:500">+ 创作牌灵</button>
   </div>
-</section>
+  <div id="plaza-feed" style="columns:2;column-gap:12px;max-width:900px"></div>
+</div>
 
-<!-- ===== SLIDE 03: 两类PM对比 ===== -->
-<section class="slide" id="slide-3">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 01</div>
-    <h2>两类 AI PM 的本质区别</h2>
-
-    <div class="concept-pair">
-      <div class="concept-left">
-        <div class="concept-label">Type A · AI 原生产品</div>
-        <h3 style="color:var(--accent-blush);">没有 AI，产品不存在</h3>
-        <p style="font-size:0.9rem;">如 Claude、ChatGPT、Midjourney。AI 能力本身就是产品价值的全部。PM 的核心工作是推动 AI 能力的边界。</p>
-        <div>
-          <span class="tag tag-blush">训练数据集</span>
-          <span class="tag tag-blush">Benchmark</span>
-          <span class="tag tag-blush">模型评估</span>
+<!-- ────────── CHAT ────────── -->
+<div class="screen" id="screen-chat">
+  <div style="font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:16px">群聊牌灵召唤</div>
+  <div class="chat-layout">
+    <div>
+      <div class="phone" id="phone-wrap">
+        <div style="display:flex;justify-content:space-between;padding:12px 14px 5px">
+          <span style="font-size:11px;color:var(--text3)">9:41</span>
+          <span style="font-size:11px;color:var(--text3)">📶🔋</span>
         </div>
-      </div>
-      <div class="concept-right">
-        <div class="concept-label">Type B · AI + 现有业务</div>
-        <h3 style="color:#4a6e4e;">AI 是增强剂，不是主角</h3>
-        <p style="font-size:0.9rem;">如智能客服、语聊房 AI 管家。产品已有用户和场景，AI 让体验更好。PM 的核心工作是让 AI 融入而非破坏。</p>
-        <div>
-          <span class="tag tag-sage">场景适配</span>
-          <span class="tag tag-sage">体验平衡</span>
-          <span class="tag tag-sage">业务指标</span>
+        <div class="chat-header-bar">
+          <div class="chat-group-av">探</div>
+          <div>
+            <div style="font-size:13px;font-weight:500">Soul探险队</div>
+            <div style="font-size:10px;color:var(--text3)">12人在线</div>
+          </div>
+        </div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div id="deck-area-wrap"></div>
+        <div class="chat-input-bar">
+          <div class="deck-icon-btn" onclick="toggleDeck()" title="打开我的牌灵">🃏</div>
+          <div class="fake-input"><span>说点什么…</span></div>
+          <button class="send-btn-chat">➤</button>
+        </div>
+        <div class="deck-overlay" id="deck-ov">
+          <div class="deck-handle"></div>
+          <div class="deck-overlay-title">
+            <span>我的牌灵</span>
+            <span style="font-size:11px;color:var(--p);cursor:pointer">管理</span>
+          </div>
+          <div class="deck-mini-grid" id="deck-mini-g"></div>
         </div>
       </div>
     </div>
-
-    <div class="quote-block">
-      <p>你属于 Type B。你的成功标准不是「AI 多聪明」，<br>而是「有麦麦的群聊，留存是否比没有的高」。</p>
+    <div class="explain-panel">
+      <h3>三步召唤你的牌灵</h3>
+      <div class="flow-step"><div class="step-num">1</div><div class="step-txt"><strong>点击🃏图标</strong>打开你的牌灵库，展示已收藏的所有类型</div></div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-txt"><strong>点击任意牌灵</strong>：技能卡发出互动组件；达人卡召唤AI分身说话；Lumi投出你的闪光名片</div></div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-txt"><strong>群成员看到组件</strong>可直接参与互动，看到达人/Lumi卡时产生"这是什么，我也想要"的好奇心</div></div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-txt"><strong>卡片右下角标注创作者署名</strong>，每次群内使用都是对广场的被动引流</div></div>
+      <div class="tip-box">💡 点击🃏打开牌灵库 → 试试召唤「✦ Lumi」看闪光名片效果，或者召唤「孟知时」看达人AI分身</div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ===== SLIDE 04: 交付物对比 ===== -->
-<section class="slide" id="slide-4">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 01</div>
-    <h2>两类 PM 的交付物差异</h2>
+<!-- ────────── CREATE ────────── -->
+<div class="screen" id="screen-create">
+  <div class="sec-label">牌灵创作工坊</div>
+  <div id="stepper-row" style="display:flex;align-items:center;gap:0;margin-bottom:24px"></div>
+  <div id="create-body" style="max-width:560px;margin:0 auto"></div>
+</div>
 
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th style="width:25%;">维度</th>
-          <th style="width:37%;">AI 原生 PM</th>
-          <th style="width:38%;">AI + 业务 PM（你）</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>成功标准</strong></td>
-          <td>AI 能力指标提升</td>
-          <td>业务指标提升（留存、活跃、满意度）</td>
-        </tr>
-        <tr>
-          <td><strong>核心交付</strong></td>
-          <td>训练数据集 → Benchmark → 模型迭代</td>
-          <td>PRD + 场景设计 + 内容安全 + 运营 SOP + Fallback 方案</td>
-        </tr>
-        <tr>
-          <td><strong>失败代价</strong></td>
-          <td>用户觉得 AI 不好用</td>
-          <td>整个社交体验变差，用户反感</td>
-        </tr>
-        <tr>
-          <td><strong>协作范围</strong></td>
-          <td>主要和 ML 工程师</td>
-          <td>产品、运营、法务、数据、AI 团队</td>
-        </tr>
-        <tr>
-          <td><strong>迭代节奏</strong></td>
-          <td>可以慢（追求模型质量）</td>
-          <td>必须快（市场竞争、用户期待）</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ===== SLIDE 05: SECTION — AI渗透阶梯 ===== -->
-<section class="slide section-slide" id="slide-5">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 02</div>
-    <h2>AI 渗透程度阶梯</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">从仅接 API 到自研模型，<br>不同阶段的投入和收益截然不同。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 06: 三个方案 ===== -->
-<section class="slide" id="slide-6">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 02</div>
-    <h2>三种方案的成本-收益对比</h2>
-
-    <div class="grid-3">
-      <div class="card card-sage" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-sage);">01</div>
-        <h3>仅用 Prompt</h3>
-        <p style="font-size:0.85rem;">接豆包 API + 系统提示词。<br>成本最低，1 周上线。</p>
-        <div class="divider" style="margin:1rem auto;"></div>
-        <div style="font-size:0.82rem; color:var(--text-muted);">
-          效果上限 <strong style="color:var(--accent-sage);">70–75 分</strong><br>
-          月成本 <strong style="color:var(--accent-sage);">¥3 万</strong><br>
-          适合 <strong style="color:var(--accent-sage);">快速验证</strong>
-        </div>
-      </div>
-
-      <div class="card card-lemon" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-lemon);">02</div>
-        <h3>Prompt + 轻微调</h3>
-        <p style="font-size:0.85rem;">LoRA 微调 + 500–1000 条标注数据。<br>4–8 周交付。</p>
-        <div class="divider" style="margin:1rem auto; background:var(--accent-lemon);"></div>
-        <div style="font-size:0.82rem; color:var(--text-muted);">
-          效果上限 <strong style="color:var(--accent-lemon);">80–85 分</strong><br>
-          一次性投入 <strong style="color:var(--accent-lemon);">¥5–10 万</strong><br>
-          适合 <strong style="color:var(--accent-lemon);">已验证需求</strong>
-        </div>
-      </div>
-
-      <div class="card card-blush" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--accent-blush);">03</div>
-        <h3>自研模型</h3>
-        <p style="font-size:0.85rem;">完整训练 + 5000 条数据 + ML 团队。<br>3 个月+。</p>
-        <div class="divider" style="margin:1rem auto; background:var(--accent-blush);"></div>
-        <div style="font-size:0.82rem; color:var(--text-muted);">
-          效果上限 <strong style="color:var(--accent-blush);">85–95 分</strong><br>
-          投入 <strong style="color:var(--accent-blush);">百万级</strong><br>
-          适合 <strong style="color:var(--accent-blush);">核心竞争力</strong>
-        </div>
-      </div>
-    </div>
-
-    <div class="highlight-box" style="margin-top:2rem;">
-      <p style="margin:0; font-size:0.92rem;"><strong>你的现状：</strong>方案 01。正确做法是先把 Prompt 跑到极限，收集数据，3 个月后再决定是否升级。不要跟风说「要自研模型」。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 07: SECTION — 核心概念 ===== -->
-<section class="slide section-slide" id="slide-7">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 03</div>
-    <h2>核心概念速查</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">标注、数据集、测试集、微调、蒸馏……<br>用最简单的话讲清楚。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 08: 概念速查表 ===== -->
-<section class="slide" id="slide-8">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 03</div>
-    <h2>十个核心概念，一张表讲清</h2>
-
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th style="width:22%;">概念</th>
-          <th style="width:40%;">一句话解释</th>
-          <th style="width:38%;">在麦麦项目中</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>标注数据</strong></td>
-          <td>给原始数据加上「标签」或「标准答案」</td>
-          <td>标注 AI 回应的同理心 / 有用性 / 自然性评分</td>
-        </tr>
-        <tr>
-          <td><strong>训练集</strong></td>
-          <td>让模型学习的数据（占 80%）</td>
-          <td>800 条标注过的群聊对话</td>
-        </tr>
-        <tr>
-          <td><strong>测试集</strong></td>
-          <td>模型从未见过的评估数据（占 20%）</td>
-          <td>200 条保留的对话，用来检验真实效果</td>
-        </tr>
-        <tr>
-          <td><strong>Benchmark</strong></td>
-          <td>最终评估标准，用来对标竞品</td>
-          <td>100 条精心人工评估的案例</td>
-        </tr>
-        <tr>
-          <td><strong>微调</strong></td>
-          <td>在现有模型上用训练集继续训练</td>
-          <td>用标注数据教豆包「麦麦风格」</td>
-        </tr>
-        <tr>
-          <td><strong>LoRA</strong></td>
-          <td>只更新 1–5% 参数的轻量微调法</td>
-          <td>成本降低 99%，效果几乎一样</td>
-        </tr>
-        <tr>
-          <td><strong>Instruction Tuning</strong></td>
-          <td>教模型理解并执行人类指令</td>
-          <td>教豆包理解「要像朋友一样温暖」</td>
-        </tr>
-        <tr>
-          <td><strong>Chain of Thought</strong></td>
-          <td>让 AI 一步步展示推理过程</td>
-          <td>先识别情绪 → 再决策 → 最后回应</td>
-        </tr>
-        <tr>
-          <td><strong>蒸馏</strong></td>
-          <td>用大模型教小模型，换取速度和成本</td>
-          <td>未来端侧部署可能用到</td>
-        </tr>
-        <tr>
-          <td><strong>Prompt 工程</strong></td>
-          <td>通过优化提示词提升 AI 效果</td>
-          <td>你现在最应该深耕的技能</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ===== SLIDE 09: 数据集流转图 ===== -->
-<section class="slide" id="slide-9">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 03</div>
-    <h2>数据集是怎样流转的？</h2>
-    <p class="lead">微调只用训练集，但用测试集评估效果。测试集模型从未见过——看过就作废。</p>
-
-    <div class="flow-container">
-      <div class="flow-step">
-        <span class="step-num">1</span>
-        收集 1000 条<br>原始对话
-      </div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">
-        <span class="step-num">2</span>
-        人工标注<br>（多维评分）
-      </div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">
-        <span class="step-num">3</span>
-        分割<br>80% 训练 / 20% 测试
-      </div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">
-        <span class="step-num">4</span>
-        LoRA 微调<br>（只用训练集）
-      </div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">
-        <span class="step-num">5</span>
-        测试集评估<br>（模型没见过）
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-top:2rem;">
-      <div class="highlight-box">
-        <h3 style="margin-bottom:0.5rem;">标注的五个维度</h3>
-        <p style="font-size:0.88rem; margin:0;">
-          ① 同理心（1–5）<br>
-          ② 有用性（1–5）<br>
-          ③ 自然性（1–5）<br>
-          ④ 安全性（1–5）<br>
-          ⑤ 整体满意度（1–5）
-        </p>
-      </div>
-      <div class="highlight-box highlight-box-blush">
-        <h3 style="margin-bottom:0.5rem; color:var(--accent-blush);">什么时候该升级到微调？</h3>
-        <p style="font-size:0.88rem; margin:0;">
-          · 用户差评率 &gt; 20%<br>
-          · AI 回应不一致 &gt; 30%<br>
-          · 竞品效果明显更好<br>
-          · Prompt 调到极限仍不够
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 10: SECTION — Chain of Thought ===== -->
-<section class="slide section-slide" id="slide-10">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 04</div>
-    <h2>Chain of Thought 实战</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">让麦麦「想清楚再说话」——<br>一步步思考，回应质量提升 20%。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 11: CoT 案例 ===== -->
-<section class="slide" id="slide-11">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 04</div>
-    <h2>一个完整的 CoT 案例</h2>
-
-    <div class="card card-sage" style="margin-bottom:1.5rem;">
-      <div class="concept-label">用户输入</div>
-      <p style="font-family:'Noto Serif SC',serif; font-size:1.1rem; color:var(--text-primary); font-weight:600; margin:0;">
-        「我失业快 3 个月了，之前的公司裁员」
-      </p>
-    </div>
-
-    <div class="card" style="background:rgba(122,158,126,0.06); border-color:var(--accent-sage);">
-      <div class="concept-label" style="color:var(--accent-sage);">麦麦的 &lt;thinking&gt; 过程</div>
-      <ul class="num-list" style="margin-top:0.5rem;">
-        <li><strong>情绪识别：</strong>被裁的失落 + 3 个月失业的焦虑，可能有自我怀疑</li>
-        <li><strong>实际情况：</strong>被裁是不可控事件（公司决定），不是个人能力问题</li>
-        <li><strong>需求判断：</strong>更需要陪伴和理解，而非「去投简历」的冷建议</li>
-        <li><strong>回应策略：</strong>承认不公平 → 肯定坚持 → 给陪伴感</li>
-      </ul>
-    </div>
-
-    <div class="card card-lemon">
-      <div class="concept-label" style="color:var(--accent-lemon);">麦麦最终输出</div>
-      <p style="font-family:'Noto Serif SC',serif; font-size:1rem; color:var(--text-primary); margin:0; line-height:2;">
-        「被裁确实很无奈，这真的不是你的问题。但你能在这 3 个月里坚持，说明你很有韧性。这个群里很多人都经历过，我们一起陪伴。」
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 12: SECTION — Prompt 工程 ===== -->
-<section class="slide section-slide" id="slide-12">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 05</div>
-    <h2>Prompt 工程七大技术</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">来自 Anthropic 官方文档的核心方法论。<br>这是你现阶段最重要的技能。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 13: 七大技术 ===== -->
-<section class="slide" id="slide-13">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 05</div>
-    <h2>七大技术一览</h2>
-
-    <div class="grid-2">
-      <div class="card card-sage">
-        <h3>01 · 清晰指令</h3>
-        <p style="font-size:0.88rem; margin:0;">把 AI 当成新实习生。不说「回答要好」，而说「回应不超过 50 字，先表达同理心，再给一个建议」。</p>
-      </div>
-      <div class="card card-sage">
-        <h3>02 · Few-shot 例子</h3>
-        <p style="font-size:0.88rem; margin:0;">给 3–5 个「用户说 → 理想回应」的配对。AI 从模仿中学会你要的风格。</p>
-      </div>
-      <div class="card card-lemon">
-        <h3>03 · Chain of Thought</h3>
-        <p style="font-size:0.88rem; margin:0;">让 AI 分步思考：先识别情绪 → 再分析需求 → 最后给出回应。准确率提升 15–20%。</p>
-      </div>
-      <div class="card card-lemon">
-        <h3>04 · XML 标签结构</h3>
-        <p style="font-size:0.88rem; margin:0;">用 <code>&lt;thinking&gt;</code> <code>&lt;response&gt;</code> 等标签分隔思考过程和最终输出，结构更清晰。</p>
-      </div>
-      <div class="card card-blush">
-        <h3>05 · 角色设定</h3>
-        <p style="font-size:0.88rem; margin:0;">在 System Prompt 中定义麦麦的身份：「你是有同理心的陪伴者，不是冷冰冰的客服」。</p>
-      </div>
-      <div class="card card-blush">
-        <h3>06 · 链式提示</h3>
-        <p style="font-size:0.88rem; margin:0;">将复杂任务拆成多步：第一步识别情感类型 → 第二步选择回应策略 → 第三步生成文案。</p>
-      </div>
-    </div>
-
-    <div class="highlight-box-lemon highlight-box" style="margin-top:1rem; text-align:center;">
-      <p style="margin:0; font-size:0.92rem;"><strong>07 · 长上下文利用</strong> — 把群聊的历史对话作为上下文传入，让 AI 的回应不再是孤立的。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 14: SECTION — 行动计划 ===== -->
-<section class="slide section-slide" id="slide-14">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 06</div>
-    <h2>你的行动路线图</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">从现在到 6 个月后，<br>每个阶段该做什么、不该做什么。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 15: 路线图 ===== -->
-<section class="slide" id="slide-15">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 06</div>
-    <h2>三阶段行动计划</h2>
-
-    <div class="card card-sage" style="margin-bottom:0.8rem;">
-      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
-        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-sage);">01</span>
-        <div>
-          <h3 style="margin:0;">现在 → 3 个月：深化 Prompt + 收集数据</h3>
-        </div>
-      </div>
-      <p style="font-size:0.88rem; margin:0;">用豆包 1.5 Lite 跑 3 个月。收集 1000+ 条用户反馈。标注 500 条数据（五维评分）。迭代 Prompt 5 个版本。目标：用户满意度 70→80 分。</p>
-    </div>
-
-    <div class="card card-lemon" style="margin-bottom:0.8rem;">
-      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
-        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-lemon);">02</span>
-        <div>
-          <h3 style="margin:0; color:var(--accent-lemon);">3–6 个月：评估是否微调</h3>
-        </div>
-      </div>
-      <p style="font-size:0.88rem; margin:0;">条件触发：如果满意度卡在 75 分且竞品更好。执行：用 1500 条数据 LoRA 微调豆包。A/B 测试微调版本 vs Prompt 版本。</p>
-    </div>
-
-    <div class="card card-blush">
-      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:0.8rem;">
-        <span style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--accent-blush);">03</span>
-        <div>
-          <h3 style="margin:0; color:var(--accent-blush);">6 个月+：自研（如果证明值得）</h3>
-        </div>
-      </div>
-      <p style="font-size:0.88rem; margin:0;">条件触发：麦麦成为杀手级功能、留存对比 &gt;15%、竞品开始模仿。投入自研团队，用 Llama/Qwen 底座长期迭代。</p>
-    </div>
-
-    <div class="dot-divider">· · ·</div>
-
-    <div class="metric-row">
-      <div class="metric-item">
-        <div class="metric-num">80+</div>
-        <div class="metric-label">目标满意度（分）</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">&lt;10%</div>
-        <div class="metric-label">差评率目标</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">&gt;10%</div>
-        <div class="metric-label">有 AI 群 vs 无 AI 群<br>留存差异</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">1000</div>
-        <div class="metric-label">3 个月数据目标（条）</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 16: SECTION — 学习清单 ===== -->
-<section class="slide section-slide" id="slide-16">
-  <div class="slide-inner" style="text-align:center;">
-    <div class="chapter-label">Chapter 07</div>
-    <h2>你需要学的五件事</h2>
-    <p style="max-width:600px; margin:1.5rem auto 0;">按优先级排序。<br>不是都要同时学，而是分阶段攻克。</p>
-  </div>
-</section>
-
-<!-- ===== SLIDE 17: 学习清单 ===== -->
-<section class="slide" id="slide-17">
-  <div class="slide-inner">
-    <div class="chapter-label">Chapter 07</div>
-    <h2>五项核心技能</h2>
-
-    <ul class="num-list">
-      <li>
-        <strong>Prompt 工程</strong> <span class="tag tag-sage">现在就学</span><br>
-        系统提示词写法、Few-shot、Chain of Thought、Temperature 调参。Anthropic 官方文档是最好的教材。
-      </li>
-      <li>
-        <strong>数据标注与质控</strong> <span class="tag tag-sage">现在就学</span><br>
-        设计标注指南、标注员一致性评估、多维度评分体系。工具推荐：Label Studio。
-      </li>
-      <li>
-        <strong>A/B 测试设计</strong> <span class="tag tag-lemon">1 个月内</span><br>
-        样本量计算、变量控制、效应量判断。在真实群聊中对比不同 Prompt 版本的效果。
-      </li>
-      <li>
-        <strong>Benchmark 构建</strong> <span class="tag tag-lemon">1–2 个月</span><br>
-        测试集设计、人工评估 vs 自动指标、用 Benchmark 指导迭代方向。
-      </li>
-      <li>
-        <strong>Fine-tuning 基础</strong> <span class="tag tag-blush">3 个月后</span><br>
-        LoRA（轻量微调）+ Instruction Tuning（指令微调）。等数据足够了再深入。
-      </li>
-    </ul>
-
-    <div class="highlight-box" style="margin-top:1.5rem;">
-      <p style="margin:0; font-size:0.92rem;">
-        <strong>资源推荐：</strong>
-        Anthropic Prompt Engineering 官方文档 ·
-        GitHub: anthropics/prompt-eng-interactive-tutorial ·
-        Label Studio（开源标注工具）·
-        UXR Claude Skills Bundle（52 个研究 Skill）
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 18: 核心金句 ===== -->
-<section class="slide cover-slide" id="slide-18">
-  <div class="slide-inner" style="text-align:center; position:relative; z-index:1;">
-    <div class="chapter-label">Final Thought</div>
-
-    <div class="quote-block" style="text-align:left; max-width:700px; margin:2rem auto;">
-      <p style="font-size:clamp(1.1rem, 2vw, 1.35rem); line-height:2.2;">
-        真正的成功是——用户完全忘记他在和 AI 聊天，<br>
-        只觉得群聊更有趣了。
-      </p>
-    </div>
-
-    <div class="divider" style="margin:2rem auto;"></div>
-
-    <p style="color:var(--text-muted); font-size:0.95rem; line-height:2;">
-      与其问「AI 管家能做什么」，<br>
-      不如问：<strong style="color:var(--accent-sage);">「麦麦的存在，能解决 Soul 语聊社交中的哪个真实问题？」</strong>
-    </p>
-
-    <div style="margin-top:3rem; font-size:0.8rem; color:var(--text-muted);">
-      基于 Claude 对话沉淀 · Soft Editorial 风格 · 2026.05
-    </div>
-  </div>
-</section>
-
-</div><!-- end .deck -->
+<div class="toast" id="toast"></div>
 
 <script>
-  // ===== Scroll Progress Bar =====
-  const progressBar = document.getElementById('progressBar');
-  const slides = document.querySelectorAll('.slide');
+// ── DATA ──
+const skillCards=[
+  {id:1,name:'骰子话题',cat:'技能',emoji:'🎲',uses:'2.3k',creator:'@小熊不睡',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',hot:true},
+  {id:2,name:'群内投票',cat:'技能',emoji:'🗳️',uses:'1.8k',creator:'@产品喵',color:'#1D9E75',bg:'#E1F5EE',tc:'#04342C',hot:false},
+  {id:3,name:'匿名吐槽',cat:'技能',emoji:'💬',uses:'3.1k',creator:'@蘑菇云',color:'#D85A30',bg:'#FAECE7',tc:'#4A1B0C',hot:true},
+  {id:4,name:'今日能量',cat:'技能',emoji:'☀️',uses:'892',creator:'@光合作用',color:'#BA7517',bg:'#FAEEDA',tc:'#412402',hot:false},
+];
+const kolCards=[
+  // ── Soul 官方虚拟伴侣 ──
+  {id:'k1',name:'孟知时',handle:'@孟知时',cat:'达人',emoji:'🔮',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',
+   tagline:'塔罗师·星座·猫奴一枚',tags:['塔罗占卜','星座解读','情感疗愈'],
+   quote:'"每张牌都是一面镜子，照见的是你自己最想知道的答案。"',
+   fans:'28.6w',uses:'11.3k',verified:true,style:'神秘·温柔·洞察力强',official:true,ugc:false,
+   aiReply:'你现在的状态，塔罗给了一张"倒置圣杯"——不是失去，是还没准备好接住。你觉得呢？'},
+  {id:'k2',name:'屿你',handle:'@屿你',cat:'达人',emoji:'🌊',color:'#185FA5',bg:'#E6F1FB',tc:'#042C53',
+   tagline:'95后白羊·杭州创业·188',tags:['创业生活','精英日常','情感陪伴'],
+   quote:'"白羊座不是冲动，是我们知道自己想要什么，然后就去了。"',
+   fans:'19.2w',uses:'7.8k',verified:true,style:'阳光·真诚·有反差萌',official:true,ugc:false,
+   aiReply:'说实话，我创业这几年最大的收获不是流水，是搞清楚了哪些人值得在意。你现在这个情况——'},
+  {id:'k3',name:'姐姐不要怂',handle:'@姐姐不要怂',cat:'达人',emoji:'💪',color:'#D85A30',bg:'#FAECE7',tc:'#4A1B0C',
+   tagline:'190cm体育生·快乐小狗本狗',tags:['元气满满','运动日常','正能量'],
+   quote:'"比我高的人没我快乐，比我快乐的人没我高。这就是我的人生哲学。"',
+   fans:'22.1w',uses:'9.4k',verified:true,style:'活力·直给·小狗能量',official:true,ugc:false,
+   aiReply:'啊啊啊来了！说吧说吧，姐姐听着呢！今天发生啥了让你这么来找我！'},
+  // ── 用户达人（UGC） ──
+  {id:'k4',name:'深海摄影师',handle:'@深海·lens',cat:'达人',emoji:'📷',color:'#854F0B',bg:'#FAEEDA',tc:'#412402',
+   tagline:'用镜头捕捉被人忽略的光',tags:['街头摄影','构图美学','光影诗学'],
+   quote:'"最好的照片不是技术最好的，是情绪最准确的那张。"',
+   fans:'8.9w',uses:'3.1k',verified:false,style:'克制·诗意·眼光毒辣',official:false,ugc:true,
+   aiReply:'这组片子问题在你太想"拍好"了——好的街拍是忘记相机那一刻按下去的。'},
+  {id:'k5',name:'深夜电台FM',handle:'@深夜电台FM',cat:'达人',emoji:'🎙️',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',
+   tagline:'每晚11点准时开播，陪你撑过今晚',tags:['深夜陪伴','情绪疏导','声音治愈'],
+   quote:'"不是每个夜晚都要有意义，有时候只是撑过去就够了。"',
+   fans:'6.2w',uses:'2.8k',verified:false,style:'低沉·慢节奏·治愈系',official:false,ugc:true,
+   aiReply:'今晚几点了？如果你现在还没睡，说明心里有件事还没放下。不用急着解决，先说说看。'},
+  {id:'k6',name:'煮茶的猫',handle:'@煮茶的猫',cat:'达人',emoji:'🍵',color:'#0F6E56',bg:'#E1F5EE',tc:'#04342C',
+   tagline:'慢下来，生活才有味道',tags:['慢生活','手作茶艺','日系美学'],
+   quote:'"很多事情不需要解决，只需要等一壶水烧开的时间。"',
+   fans:'4.7w',uses:'1.9k',verified:false,style:'温吞·不急·有禅意',official:false,ugc:true,
+   aiReply:'你现在能去烧一壶水吗？就这一件事。等水开的三分钟，什么都不用想，就听水声。'},
+  {id:'k7',name:'失眠研究所',handle:'@失眠研究所',cat:'达人',emoji:'🌙',color:'#185FA5',bg:'#E6F1FB',tc:'#042C53',
+   tagline:'睡不着的人都在这里',tags:['失眠互助','夜猫族','黑夜絮语'],
+   quote:'"失眠的人不是有问题，是白天装得太好，夜里才真实。"',
+   fans:'11.4w',uses:'5.1k',verified:false,style:'清醒·毒舌·但懂你',official:false,ugc:true,
+   aiReply:'又没睡着。我猜不是睡不着，是脑子里有一件事在反复转。是什么？说出来比闷着好睡。'},
+];
+const charCards=[
+  {id:'c1',name:'方糖',cat:'角色',emoji:'🍬',color:'#D4537E',bg:'#FBEAF0',tc:'#4B1528',
+   tagline:'温柔但有锋芒的自律搭子',tags:['打卡督促','早起陪伴','情绪支持'],
+   groups:82,uses:'4.1k',origin:'用户原创',
+   persona:'每天早上用一个带哲学意味的问题叫醒你，打卡了给你说好话，没打卡温柔戳你',
+   aiReply:'今天的签到问题是：如果明天的你能给今天的你留一句话，你希望听到什么？'},
+  {id:'c2',name:'玛丽',cat:'角色',emoji:'📮',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',
+   tagline:'用打字机写信给你的治愈者',tags:['深度倾听','治愈孤独','情感共鸣'],
+   groups:156,uses:'7.8k',origin:'Soul官方',
+   persona:'《玛丽和麦克斯》同名角色，用信件的节奏陪你说话，慢慢的，但每一字都认真',
+   aiReply:'你好。我不善于直接说"我懂你"，但我想慢慢听你说。就像写信一样，不着急。'},
+  {id:'c3',name:'深夜树洞',cat:'角色',emoji:'🌲',color:'#0F6E56',bg:'#E1F5EE',tc:'#04342C',
+   tagline:'只在深夜营业的倾听者',tags:['匿名倾诉','不评判','情绪容器'],
+   groups:234,uses:'11.2k',origin:'用户原创',
+   persona:'没有建议，没有评判，只是认真地听你说，然后说：我听到了',
+   aiReply:'我听到了。你现在说的这些，都是真实的。你不需要整理好了才说。'},
+  {id:'c4',name:'毒舌评委',cat:'角色',emoji:'🎤',color:'#BA7517',bg:'#FAEEDA',tc:'#412402',
+   tagline:'真话比糖衣更有价值',tags:['直球点评','创作反馈','不说废话'],
+   groups:67,uses:'2.9k',origin:'用户原创',
+   persona:'你给他看作品，他直接告诉你哪里烂、哪里好，一句废话没有，但说的都对',
+   aiReply:'不错，但你知道哪里最烂吗？第二段。你在那里缩了。'},
+];
 
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    progressBar.style.width = progress + '%';
+// Lumi card (分身)
+const lumiData={
+  name:'Lumi',handle:'@lumi_soul',mbti:'INFP',
+  quote:'我相信每个人都有一个值得被看见的频率，只是还没遇到对的接收器。',
+  tags:['社会学控','独立电影','深夜哲学','城市漫游'],
+  posts:'312',likes:'8.4k',
+};
 
-    // Update nav dots
-    const navDots = document.querySelectorAll('.nav-dot');
-    slides.forEach((slide, i) => {
-      const rect = slide.getBoundingClientRect();
-      if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-        navDots.forEach(d => d.classList.remove('active'));
-        if (navDots[i]) navDots[i].classList.add('active');
-      }
-    });
-  });
+const subFilters=['全部','技能','达人','角色'];
+let activeSF='全部';
+let saved=new Set([1,'k1','k2','c2']);
+let savedLumi=false;
+let deckOpen=false;
+let votes={A:3,B:2,C:1};
+let chatExtras=[];
 
-  // ===== Generate Nav Dots =====
-  const navDotsContainer = document.getElementById('navDots');
-  slides.forEach((slide, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-    dot.addEventListener('click', () => {
-      slide.scrollIntoView({ behavior: 'smooth' });
-    });
-    navDotsContainer.appendChild(dot);
-  });
+// ── PLAZA RENDER ──
+// ── Feed data ──
+const feedPosts=[
+  {id:'f1',
+   user:{name:'深夜电台FM',handle:'@深夜电台FM',color:'#534AB7',bg:'#EEEDFE',av:'电',verified:false,ugc:true},
+   time:'32分钟前',action:'发布了一张新牌灵',
+   card:{name:'今晚几点了',type:'Skills化',typeColor:'#534AB7',typeBg:'#EEEDFE',
+         emoji:'🎙️',cat:'情感陪伴',cap:'LLM生成 · 情绪感知',
+         desc:'召唤后AI根据当前时间生成一段深夜暖心话，附带今晚推荐的一个问题',
+         preview:'"又是睡不着的夜晚？那正好。说一件今天让你觉得还不错的事。"'},
+   likes:234,saves:891,comments:47,saved:false},
 
-  // ===== Intersection Observer for Animations =====
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const inner = entry.target.querySelector('.slide-inner');
-        if (inner) {
-          inner.style.animation = 'none';
-          inner.offsetHeight; // trigger reflow
-          inner.style.animation = 'fadeSlideUp 0.8s ease-out both';
-        }
-      }
-    });
-  }, { threshold: 0.2 });
+  {id:'f2',
+   user:{name:'孟知时',handle:'@孟知时',color:'#534AB7',bg:'#EEEDFE',av:'孟',verified:true,ugc:false,official:true},
+   time:'1小时前',action:'的达人牌灵本周登顶热榜',
+   card:{name:'今日星盘解读',type:'Agent化',typeColor:'#0F6E56',typeBg:'#E1F5EE',
+         emoji:'🔮',cat:'塔罗 · 星座',cap:'人格持久化 · 知识蒸馏',
+         desc:'孟知时AI分身，根据你提供的信息抽取塔罗牌并给出当下状态解读',
+         preview:'"你现在抽到了权杖三——这是出发的信号，不是终点。你准备好了吗？"'},
+   likes:1820,saves:11300,comments:342,saved:true},
 
-  slides.forEach(slide => observer.observe(slide));
+  {id:'f3',
+   user:{name:'momo_不困',handle:'@momo_不困',color:'#D4537E',bg:'#FBEAF0',av:'mo',verified:false,ugc:true},
+   time:'2小时前',action:'在【失眠互助小组】群里用了这张牌，群里炸了🎉',
+   card:{name:'失眠研究所',type:'Agent化',typeColor:'#0F6E56',typeBg:'#E1F5EE',
+         emoji:'🌙',cat:'深夜陪伴 · 倾诉',cap:'多轮记忆 · 人格一致性',
+         desc:'不评判，只倾听。有什么憋着的，说出来',
+         preview:'"3点42分，你在这里——我在的。不用解释，就说吧。"'},
+   likes:567,saves:2100,comments:89,saved:false},
 
-  // ===== Keyboard Navigation =====
-  document.addEventListener('keydown', (e) => {
-    const currentSlide = [...slides].findIndex(slide => {
-      const rect = slide.getBoundingClientRect();
-      return rect.top >= -100 && rect.top < window.innerHeight / 2;
-    });
+  {id:'f4',
+   user:{name:'深海摄影师',handle:'@深海·lens',color:'#854F0B',bg:'#FAEEDA',av:'摄',verified:false,ugc:true},
+   time:'3小时前',action:'刚创作了一张新牌灵，求大家测评！',
+   card:{name:'构图眼力挑战',type:'Skills化',typeColor:'#534AB7',typeBg:'#EEEDFE',
+         emoji:'📷',cat:'摄影 · 创作',cap:'结构化输出 · 图文联动',
+         desc:'发一张你的照片，AI用摄影师视角点评构图，说好说坏都直接',
+         preview:'"主体清晰，但你让观众的视线在画面里迷路了——试试把地平线压低三分之一。"'},
+   likes:312,saves:1200,comments:156,saved:false},
 
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      const next = Math.min(currentSlide + 1, slides.length - 1);
-      slides[next].scrollIntoView({ behavior: 'smooth' });
-    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-      e.preventDefault();
-      const prev = Math.max(currentSlide - 1, 0);
-      slides[prev].scrollIntoView({ behavior: 'smooth' });
-    }
-  });
+  {id:'f5',
+   user:{name:'姐姐不要怂',handle:'@姐姐不要怂',color:'#D85A30',bg:'#FAECE7',av:'姐',verified:true,ugc:false,official:true},
+   time:'4小时前',action:'在【运动打卡群】群里召唤了达人牌灵',
+   card:{name:'今日能量补给',type:'Agent化',typeColor:'#0F6E56',typeBg:'#E1F5EE',
+         emoji:'💪',cat:'运动 · 正能量',cap:'风格蒸馏 · 实时生成',
+         desc:'姐姐不要怂AI分身，今天的训练计划和专属鼓励话',
+         preview:'"来了来了！今天的计划：深蹲4组，跑步20分钟。你不是在锻炼身体，你在练心气！"'},
+   likes:890,saves:3400,comments:203,saved:false},
+
+  {id:'f6',
+   user:{name:'煮茶的猫',handle:'@煮茶的猫',color:'#0F6E56',bg:'#E1F5EE',av:'茶',verified:false,ugc:true},
+   time:'5小时前',action:'分享了一张被850人收藏的牌灵',
+   card:{name:'今日茶语',type:'Skills化',typeColor:'#534AB7',typeBg:'#EEEDFE',
+         emoji:'🍵',cat:'慢生活 · 禅意',cap:'LLM生成 · 情境感知',
+         desc:'每天召唤一次，AI生成一句和今日心情对话的茶语，配今日推荐茶',
+         preview:'"今天适合喝白毫银针。有些事不需要解决，只需要沏一壶茶等它过去。"'},
+   likes:421,saves:856,comments:67,saved:false},
+];
+
+let feedSaved=new Set(['f2']);
+let feedLiked=new Set();
+
+function feedCardHTML(post){
+  const u=post.user;
+  const card=post.card;
+  const isSaved=feedSaved.has(post.id);
+  const isLiked=feedLiked.has(post.id);
+  const isOfficial=u.official;
+  const badgeBg=isOfficial?'#534AB7':'#1D9E75';
+  const badgeLabel=isOfficial?'Soul官方':'用户达人';
+  const cardAccent=card.typeColor;
+  const cardBg=card.typeBg;
+  const cardTc=card.typeBg==='#EEEDFE'?'#3C3489':card.typeBg==='#E1F5EE'?'#04342C':'#04342C';
+  return `<div style="break-inside:avoid;margin-bottom:12px;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column">
+
+    <!-- Card face -->
+    <div style="background:${cardBg};padding:14px 13px 11px;position:relative">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:9px;padding:2px 7px;border-radius:5px;font-weight:600;background:${cardAccent};color:#fff">${card.type}</span>
+        <span style="font-size:9px;color:${cardAccent};opacity:.8">${card.cat}</span>
+      </div>
+      <div style="font-size:20px;margin-bottom:7px">${card.emoji}</div>
+      <div style="font-size:14px;font-weight:700;color:${cardTc};margin-bottom:5px;line-height:1.3">${card.name}</div>
+      <div style="font-size:11px;color:${cardAccent};opacity:.85;line-height:1.5">${card.preview}</div>
+    </div>
+
+    <!-- AI cap strip -->
+    <div style="padding:6px 13px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px">
+      <span style="font-size:9px;color:var(--text3)">⚙</span>
+      <span style="font-size:9px;color:var(--text3)">${card.cap}</span>
+    </div>
+
+    <!-- Creator row -->
+    <div style="padding:9px 13px 5px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;background:${u.bg};color:${u.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${u.av}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name}</div>
+        <span style="font-size:9px;padding:1px 5px;border-radius:4px;color:#fff;background:${badgeBg};font-weight:500">${badgeLabel}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="padding:6px 10px 9px;display:flex;align-items:center;gap:4px">
+      <button onclick="likePost('${post.id}')" style="flex:1;font-size:11px;color:${isLiked?'#D85A30':'var(--text3)'};background:none;border:none;cursor:pointer;padding:4px 2px;display:flex;align-items:center;justify-content:center;gap:3px">
+        ${isLiked?'❤':'🤍'} ${isLiked?post.likes+1:post.likes}
+      </button>
+      <button onclick="collectPost('${post.id}')" style="flex:2;font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid ${isSaved?'#534AB7':'var(--border)'};background:${isSaved?'#534AB7':'transparent'};color:${isSaved?'#fff':'var(--text2)'};cursor:pointer;font-weight:500;transition:.15s;white-space:nowrap">
+        ${isSaved?'✓ 已收藏':'🔖 收藏到库'}
+      </button>
+      <button onclick="showToast('已加入召唤队列')" style="flex:2;font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap">
+        🎯 在群里用
+      </button>
+    </div>
+  </div>`; }
+
+function collectPost(id){
+  if(feedSaved.has(id)) feedSaved.delete(id);
+  else{ feedSaved.add(id); showToast('已收藏到我的牌灵库 ✓'); }
+  renderPlaza();
+}
+function likePost(id){
+  if(feedLiked.has(id)) feedLiked.delete(id);
+  else feedLiked.add(id);
+  renderPlaza();
+}
+
+function renderPlaza(){
+  document.getElementById('plaza-feed').innerHTML=feedPosts.map(p=>feedCardHTML(p)).join('');
+}
+
+// renderCharGrid removed
+
+function toggleSave(id){
+  saved.has(id)?saved.delete(id):saved.add(id);
+  renderPlaza();
+  showToast(saved.has(id)?'已收藏到牌灵库 ✓':'已移出牌灵库');
+  renderDeckMini();
+}
+
+// ── CHAT ──
+const initMsgs=[
+  {av:'熊',acolor:'#854F0B',text:'大家今晚有空吗？'},
+  {av:'喵',acolor:'#D4537E',text:'在的在的！'},
+  {av:'云',acolor:'#0F6E56',text:'感觉群里好久没一起玩了'},
+];
+
+// Pre-deployed cards from other users (shows card circulation + collect)
+const preDeployedCards=[
+  {sender:{av:'喵',acolor:'#D4537E'},
+   card:{name:'今晚几点了',emoji:'🎙️',type:'Skills化',typeBg:'#EEEDFE',typeColor:'#534AB7',
+         preview:'"还没睡的人，来说说今天发生了什么。"',
+         author:'@深夜电台FM',authorType:'用户达人',uses:'2.8k',cardId:'k5'}},
+];
+
+function otherUserCardHTML(p){
+  const c=p.card;
+  const isSaved=saved.has(c.cardId);
+  return `<div class="msg-row">
+    <div class="msg-av" style="background:${p.sender.acolor}">${p.sender.av}</div>
+    <div style="max-width:215px">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:4px;padding-left:2px">发送了一张牌灵</div>
+      <div style="border-radius:13px;overflow:hidden;border:1px solid ${c.typeBg==='#EEEDFE'?'#CECBF6':'#9FE1CB'}">
+        <div style="background:${c.typeBg};padding:10px 12px 8px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+            <span style="font-size:14px">${c.emoji}</span>
+            <span style="font-size:12px;font-weight:600;color:${c.typeColor==='#534AB7'?'#3C3489':'#04342C'}">${c.name}</span>
+            <span style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:4px;background:${c.typeColor};color:#fff;font-weight:500">${c.type}</span>
+          </div>
+          <div style="font-size:11px;color:${c.typeColor==='#534AB7'?'#534AB7':'#0F6E56'};line-height:1.5;font-style:italic">${c.preview}</div>
+        </div>
+        <div style="padding:7px 12px;background:var(--bg);border-top:1px solid var(--border)">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">by ${c.author} · ${c.authorType} · ${c.uses}次使用</div>
+          <button onclick="collectOther('${c.cardId}')" style="width:100%;padding:5px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid #534AB7;background:${isSaved?'#534AB7':'transparent'};color:${isSaved?'#fff':'#534AB7'};transition:.15s">
+            ${isSaved?'✓ 已收藏到我的牌灵库':'🔖 收藏到我的牌灵库'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function collectOther(id){
+  saved.has(id)?saved.delete(id):saved.add(id);
+  showToast(saved.has(id)?'已收藏到牌灵库 ✓':'已移出牌灵库');
+  renderChatMsgs();
+  renderDeckMini();
+}
+
+function renderChatMsgs(){
+  const el=document.getElementById('chat-msgs');
+  el.innerHTML=[
+    ...initMsgs.map(m=>`
+      <div class="msg-row">
+        <div class="msg-av" style="background:${m.acolor}">${m.av}</div>
+        <div class="bubble">${m.text}</div>
+      </div>`),
+    ...preDeployedCards.map(p=>otherUserCardHTML(p)),
+    ...chatExtras
+  ].join('');
+  el.scrollTop=el.scrollHeight;
+}
+
+function toggleDeck(){
+  deckOpen=!deckOpen;
+  document.getElementById('deck-ov').style.transform=deckOpen?'translateY(0)':'translateY(100%)';
+}
+
+function renderDeckMini(){
+  const items=[
+    {id:'lumi',label:'✦ Lumi',emoji:'✨',bg:'linear-gradient(135deg,#26215C,#534AB7)',special:true},
+    ...kolCards.filter(k=>saved.has(k.id)).map(k=>({id:k.id,label:k.name,emoji:k.emoji,bg:k.bg})),
+    ...charCards.filter(c=>saved.has(c.id)).map(c=>({id:c.id,label:c.name,emoji:c.emoji,bg:c.bg})),
+    ...skillCards.filter(s=>saved.has(s.id)).map(s=>({id:s.id,label:s.name,emoji:s.emoji,bg:s.bg})),
+  ];
+  document.getElementById('deck-mini-g').innerHTML=items.map(it=>`
+    <div class="deck-mini" onclick="deployCard('${it.id}')">
+      <div class="deck-mini-top" style="background:${it.bg}">${it.emoji}</div>
+      <div class="deck-mini-label">${it.label}</div>
+    </div>`).join('') || '<div style="grid-column:1/-1;text-align:center;font-size:12px;color:var(--text3);padding:16px">先去广场收藏牌灵</div>';
+}
+
+function deployCard(id){
+  deckOpen=false;
+  document.getElementById('deck-ov').style.transform='translateY(100%)';
+  let html='';
+  if(id==='lumi'){
+    html=buildLumiCard();
+  } else if(id===2 || (typeof id==='number'&&skillCards.find(s=>s.id===id))){
+    const card=skillCards.find(s=>s.id===id)||skillCards[1];
+    if(id===2) html=buildVoteCard();
+    else html=buildSkillMsg(card);
+  } else {
+    const kol=kolCards.find(k=>k.id===id);
+    if(kol) html=buildKolMsg(kol);
+    const ch=charCards.find(c=>c.id===id);
+    if(ch) html=buildCharMsg(ch);
+  }
+  if(html){chatExtras.push(html);renderChatMsgs();}
+}
+
+function buildLumiCard(){
+  return `<div class="msg-row me">
+    <div class="msg-av" style="background:var(--p)">我</div>
+    <div class="lumi-card" style="max-width:210px">
+      <div class="lumi-shimmer"></div>
+      <div class="lumi-inner">
+        <div class="lumi-badge">闪光名片</div>
+        <div class="lumi-name">${lumiData.name}</div>
+        <div class="lumi-handle">${lumiData.handle}</div>
+        <div class="lumi-mbti">${lumiData.mbti}</div>
+        <div class="lumi-quote">${lumiData.quote}</div>
+        <div class="lumi-tags">${lumiData.tags.map(t=>`<span class="lumi-tag">${t}</span>`).join('')}</div>
+        <div class="lumi-stats">
+          <div class="lumi-stat"><strong>${lumiData.posts}</strong>发帖</div>
+          <div class="lumi-stat"><strong>${lumiData.likes}</strong>获赞</div>
+        </div>
+        <button class="lumi-cta" onclick="showToast('已向 Lumi 发送好友申请 ✦')">+ 加我好友</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildVoteCard(){
+  const total=Object.values(votes).reduce((a,b)=>a+b,0);
+  return `<div class="msg-row me">
+    <div class="msg-av" style="background:var(--p)">我</div>
+    <div class="vote-card-chat" id="vc-main">
+      <div class="card-header-strip" style="background:#E1F5EE">
+        <span style="font-size:13px">🗳️</span>
+        <span style="font-size:11px;font-weight:600;color:#04342C">群内投票</span>
+        <span class="chip" style="color:#1D9E75">进行中</span>
+      </div>
+      <div style="padding:8px 12px 4px;font-size:12px;font-weight:600;color:var(--text)">今晚活动投票 🎉</div>
+      <div class="vote-opts-area" id="vote-opts-live">
+        ${voteOptHtml('A','去K歌 🎤')}${voteOptHtml('B','吃火锅 🍲')}${voteOptHtml('C','打剧本杀 🔍')}
+      </div>
+      <div class="card-footer-strip">
+        <span style="font-size:10px;color:var(--text3)">by @产品喵 · ${total}人参与</span>
+        <button class="card-act-btn" style="background:var(--teal)" onclick="doVote('A')">参与</button>
+      </div>
+    </div>
+  </div>`;
+}
+function voteOptHtml(k,label){
+  const t=Object.values(votes).reduce((a,b)=>a+b,0)||1;
+  const pct=Math.round(votes[k]/t*100);
+  return `<div class="vote-opt-row" onclick="doVote('${k}')">
+    <div class="vote-lbl"><span>${label}</span><span style="color:var(--text3)">${votes[k]}票</span></div>
+    <div class="vote-bar"><div class="vote-fill" style="width:${pct}%;background:var(--teal)"></div></div>
+  </div>`;
+}
+function doVote(k){
+  votes[k]++;
+  const el=document.getElementById('vote-opts-live');
+  if(el) el.innerHTML=voteOptHtml('A','去K歌 🎤')+voteOptHtml('B','吃火锅 🍲')+voteOptHtml('C','打剧本杀 🔍');
+}
+
+function buildSkillMsg(card){
+  return `<div class="msg-row me">
+    <div class="msg-av" style="background:var(--p)">我</div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);max-width:170px">
+      <div style="background:${card.bg};padding:14px;text-align:center">
+        <div style="font-size:28px;margin-bottom:6px">${card.emoji}</div>
+        <div style="font-size:13px;font-weight:600;color:${card.tc}">${card.name}</div>
+      </div>
+      <div style="padding:8px 10px;font-size:11px;color:var(--text3)">AI正在生成内容…</div>
+    </div>
+  </div>`;
+}
+
+function buildKolMsg(kol){
+  return `<div class="msg-row me">
+    <div class="msg-av" style="background:var(--p)">我</div>
+    <div class="kol-msg-card">
+      <div class="kol-msg-header" style="background:${kol.bg}">
+        <div class="kol-msg-id">
+          <div class="kol-msg-av" style="background:${kol.color}22">${kol.emoji}</div>
+          <div>
+            <span class="kol-msg-name" style="color:${kol.tc}">${kol.name}</span>
+            ${kol.verified?`<span class="kol-v" style="background:${kol.color}">${kol.official?'官方':'认证'}</span>`:''}
+          </div>
+        </div>
+        <div style="font-size:10px;color:${kol.color}">${kol.tagline}</div>
+      </div>
+      <div class="kol-msg-body">${kol.aiReply}</div>
+      <div style="padding:6px 12px 9px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:10px;color:var(--text3)">AI分身 · ${kol.style}</span>
+        <button onclick="showToast('已收藏 ${kol.name} 牌灵 ✓')" style="font-size:10px;padding:3px 9px;border-radius:7px;background:${kol.color};color:#fff;border:none;cursor:pointer">收藏</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildCharMsg(ch){
+  return `<div class="msg-row me">
+    <div class="msg-av" style="background:var(--p)">我</div>
+    <div class="char-msg-card" style="border-radius:14px;border:1px solid var(--border);overflow:hidden;max-width:210px;background:var(--bg2)">
+      <div style="background:${ch.bg};padding:10px 12px 8px;display:flex;align-items:center;gap:7px">
+        <span style="font-size:16px">${ch.emoji}</span>
+        <span style="font-size:12px;font-weight:600;color:${ch.tc}">${ch.name}</span>
+        <span style="margin-left:auto;font-size:9px;border:1px solid ${ch.color};color:${ch.color};padding:1px 5px;border-radius:4px">${ch.origin}</span>
+      </div>
+      <div style="padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.6">${ch.aiReply}</div>
+    </div>
+  </div>`;
+}
+
+// ── CREATE ──
+const createTemplates=[
+  {id:1,emoji:'🎲',name:'话题生成',desc:'AI随机生成群聊讨论话题',color:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',agentType:'Skills',aiCap:'LLM生成 · 上下文感知'},
+  {id:2,emoji:'🗳️',name:'互动投票',desc:'发起可点击的选项投票',color:'#1D9E75',bg:'#E1F5EE',tc:'#04342C',agentType:'Skills',aiCap:'结构化输出 · 组件渲染'},
+  {id:3,emoji:'🎭',name:'角色牌灵',desc:'创建你的原创AI虚拟角色',color:'#D4537E',bg:'#FBEAF0',tc:'#4B1528',agentType:'Agent',aiCap:'人格持久化 · 多轮记忆'},
+  {id:4,emoji:'👤',name:'达人牌灵',desc:'封装你的风格与创作思维',color:'#BA7517',bg:'#FAEEDA',tc:'#412402',agentType:'Agent',aiCap:'知识蒸馏 · RAG检索'},
+];
+const fmts=['话题列表','投票组件','对话风格','角色人设'];
+let cStep=1,cTpl=0,cFmt=0,cName='',cTrigger='',cPrompt='',cPub=true,cRemix=false;
+
+function renderStepper(){
+  const steps=['选类型','配置','预览'];
+  document.getElementById('stepper-row').innerHTML=steps.map((s,i)=>`
+    ${i>0?'<div style="flex:1;height:1px;background:var(--border)"></div>':''}
+    <div style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;
+      background:${cStep===i+1?'var(--p)':cStep>i+1?'#E1F5EE':'var(--bg2)'};
+      color:${cStep===i+1?'#fff':cStep>i+1?'var(--teal)':'var(--text3)'};
+      border:1px solid ${cStep===i+1?'var(--p)':cStep>i+1?'var(--teal)':'var(--border)'}"
+      onclick="if(cStep>${i+1}){cStep=${i+1};renderCreate()}">${cStep>i+1?'✓ ':''} ${s}</div>
+  `).join('');
+}
+
+function renderCreate(){
+  renderStepper();
+  const el=document.getElementById('create-body');
+  if(cStep===1){
+    el.innerHTML=`
+      <p style="font-size:13px;color:var(--text2);margin-bottom:18px">选择你要创作的牌灵类型</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        ${createTemplates.map(t=>`
+          <div onclick="cTpl=${t.id};renderCreate()" style="border-radius:14px;border:${cTpl===t.id?'2px solid var(--p)':'1px solid var(--border)'};padding:14px;cursor:pointer;background:${cTpl===t.id?'var(--pl)':'var(--bg2)'};transition:.15s">
+            <div style="font-size:22px;margin-bottom:8px">${t.emoji}</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:3px;color:${cTpl===t.id?'var(--p)':'var(--text)'}">${t.name}</div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:8px">${t.desc}</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <span style="font-size:9px;padding:2px 6px;border-radius:5px;font-weight:600;background:${t.agentType==='Agent'?'#E1F5EE':'#EEEDFE'};color:${t.agentType==='Agent'?'#0F6E56':'#534AB7'}">${t.agentType==='Agent'?'🤖 Agent化':'⚡ Skills化'}</span>
+              <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg);color:var(--text3)">${t.aiCap}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button onclick="if(cTpl){cStep=2;renderCreate()}" style="width:100%;padding:12px;border-radius:11px;background:var(--p);color:#fff;border:none;font-size:14px;font-weight:500;cursor:pointer;opacity:${cTpl?1:.4}">下一步 →</button>`;
+  } else if(cStep===2){
+    const t=createTemplates.find(x=>x.id===cTpl)||createTemplates[0];
+    el.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${t.bg};border-radius:10px;margin-bottom:18px;border:1px solid ${t.color}33">
+        <span style="font-size:18px">${t.emoji}</span><span style="font-size:12px;font-weight:500;color:${t.tc}">${t.name}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label style="font-size:12px;font-weight:500;color:var(--text);display:block;margin-bottom:5px">牌灵名称</label>
+          <input id="cn" value="${cName}" maxlength="12" placeholder="例：深夜树洞 2.0" oninput="cName=this.value" style="width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:13px;outline:none;color:var(--text);background:var(--bg2)"/>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:500;color:var(--text);display:block;margin-bottom:5px">触发词</label>
+          <input id="ct" value="${cTrigger}" maxlength="8" placeholder="例：树洞、聊聊" oninput="cTrigger=this.value" style="width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:13px;outline:none;color:var(--text);background:var(--bg2)"/>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:500;color:var(--text);display:block;margin-bottom:5px">核心提示词</label>
+          <textarea id="cp" placeholder="描述你希望这个牌灵做什么、说话风格是什么样的…" oninput="cPrompt=this.value" style="width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:13px;outline:none;color:var(--text);background:var(--bg2);resize:none;height:80px;font-family:inherit;line-height:1.6">${cPrompt}</textarea>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:500;color:var(--text);display:block;margin-bottom:7px">输出格式</label>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            ${fmts.map((f,i)=>`<button onclick="cFmt=${i};renderCreate()" style="padding:5px 12px;border-radius:16px;font-size:12px;cursor:pointer;border:1px solid ${cFmt===i?'var(--p)':'var(--border)'};background:${cFmt===i?'var(--pl)':'var(--bg2)'};color:${cFmt===i?'var(--p)':'var(--text2)'}">${f}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      </div>
+      <div style="margin-top:16px;border-radius:12px;border:1px solid #CECBF6;background:#F8F7FE;padding:13px 14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+          <span style="font-size:11px;font-weight:600;color:#534AB7">${t.agentType==='Agent'?'🤖 Agent化牌灵':'⚡ Skills化牌灵'}</span>
+          <span style="font-size:10px;color:#7F77DD">· 召唤时触发以下AI能力</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(t.agentType==='Agent'?
+            [{icon:'💾',label:'人格记忆',desc:'跨会话保持角色一致性'},{icon:'🧠',label:'LLM推理',desc:'基于人设实时生成回复'},{icon:'🔄',label:'多轮上下文',desc:'记住群内对话历史'}]:
+            [{icon:'⚡',label:'即时生成',desc:'每次召唤实时调用模型'},{icon:'🎯',label:'结构化输出',desc:'按模板生成组件内容'},{icon:'📡',label:'上下文感知',desc:'读取群聊话题背景'}]
+          ).map(cap=>`
+            <div style="background:#fff;border-radius:8px;border:1px solid #CECBF6;padding:7px 9px;display:flex;gap:7px;align-items:flex-start;flex:1;min-width:120px">
+              <span style="font-size:14px;flex-shrink:0">${cap.icon}</span>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:#534AB7">${cap.label}</div>
+                <div style="font-size:10px;color:#7F77DD;margin-top:1px">${cap.desc}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <button onclick="saveDraft();cStep=3;renderCreate()" style="width:100%;padding:12px;border-radius:11px;background:var(--p);color:#fff;border:none;font-size:14px;font-weight:500;cursor:pointer;margin-top:14px">预览效果 →</button>`;
+  } else {
+    const t=createTemplates.find(x=>x.id===cTpl)||createTemplates[0];
+    const name=cName||'我的新牌灵';
+    el.innerHTML=`
+      <div style="border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px">
+        <div style="background:${t.bg};padding:16px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+            <span style="font-size:22px">${t.emoji}</span>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:${t.tc}">${name}</div>
+              <div style="font-size:11px;color:${t.color}">${t.name} · ${fmts[cFmt]}</div>
+            </div>
+            <span style="margin-left:auto;font-size:10px;border:1px solid ${t.color};color:${t.color};padding:2px 7px;border-radius:6px">预览</span>
+          </div>
+          <div style="font-size:12px;color:${t.tc};opacity:.8">触发词：${cTrigger||'未设置'}</div>
+        </div>
+        <div style="padding:14px;background:var(--bg)">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px">
+            <span style="font-size:11px;color:var(--text3)">模拟输出 · AI生成</span>
+            <span style="font-size:9px;padding:1px 7px;border-radius:5px;background:${t.agentType==='Agent'?'#E1F5EE':'#EEEDFE'};color:${t.agentType==='Agent'?'#0F6E56':'#534AB7'};font-weight:600">${t.agentType==='Agent'?'🤖 Agent':'⚡ Skills'}</span>
+          </div>
+          <div style="background:var(--bg2);border-radius:9px;padding:11px;display:flex;flex-direction:column;gap:7px;margin-bottom:10px">
+            <div style="font-size:12px;color:var(--text);line-height:1.6">💡 话题一：如果你能为这个群定制一首主题曲，歌名是什么？</div>
+            <div style="font-size:12px;color:var(--text);line-height:1.6">🎲 话题二：群里谁最有可能成为出色的编剧，理由是什么？</div>
+            <div style="font-size:12px;color:var(--text);line-height:1.6">🎯 话题三：你第一次发言前，在群里潜水了多久？</div>
+          </div>
+          <div style="background:#F8F7FE;border-radius:9px;border:1px solid #CECBF6;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#534AB7;margin-bottom:7px;letter-spacing:.2px">AI执行链路</div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#7F77DD;flex-wrap:wrap">
+              <span style="background:#fff;border:1px solid #CECBF6;padding:2px 8px;border-radius:5px">用户召唤</span>
+              <span>→</span>
+              <span style="background:#fff;border:1px solid #CECBF6;padding:2px 8px;border-radius:5px">${t.agentType==='Agent'?'读取人格记忆':'读取提示词模板'}</span>
+              <span>→</span>
+              <span style="background:#fff;border:1px solid #CECBF6;padding:2px 8px;border-radius:5px">LLM推理生成</span>
+              <span>→</span>
+              <span style="background:#534AB7;color:#fff;border:1px solid #534AB7;padding:2px 8px;border-radius:5px">组件渲染输出</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:8px 14px;border-top:1px solid var(--border);font-size:10px;color:var(--text3);display:flex;justify-content:space-between">
+          <span>by 你 · 0次使用</span><span>格式：${fmts[cFmt]}</span>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:13px;border:1px solid var(--border);padding:14px;margin-bottom:14px">
+        <div style="font-size:12px;font-weight:500;margin-bottom:11px">发布设置</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0">
+          <span style="font-size:12px;color:var(--text)">上架牌灵广场</span>
+          <div onclick="cPub=!cPub;renderCreate()" style="width:34px;height:19px;border-radius:10px;background:${cPub?'var(--p)':'var(--border)'};position:relative;cursor:pointer">
+            <div style="position:absolute;top:2px;${cPub?'right:2px':'left:2px'};width:15px;height:15px;border-radius:50%;background:#fff;transition:.2s"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-top:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--text)">允许他人 remix</span>
+          <div onclick="cRemix=!cRemix;renderCreate()" style="width:34px;height:19px;border-radius:10px;background:${cRemix?'var(--p)':'var(--border)'};position:relative;cursor:pointer">
+            <div style="position:absolute;top:2px;${cRemix?'right:2px':'left:2px'};width:15px;height:15px;border-radius:50%;background:#fff;transition:.2s"></div>
+          </div>
+        </div>
+      </div>
+      <button onclick="publishCard()" style="width:100%;padding:13px;border-radius:11px;background:var(--p);color:#fff;border:none;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.2px">✦ 发布到广场</button>`;
+  }
+}
+function saveDraft(){
+  cName=document.getElementById('cn')?.value||cName;
+  cTrigger=document.getElementById('ct')?.value||cTrigger;
+  cPrompt=document.getElementById('cp')?.value||cPrompt;
+}
+function publishCard(){
+  showToast(`"${cName||'我的新牌灵'}" 已发布到广场 🎉`);
+  setTimeout(()=>showScreen('plaza'),1400);
+}
+
+// ── UTILS ──
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  ['plaza','chat','create'].forEach((n,i)=>{if(n===name)document.querySelectorAll('.nav-tab')[i].classList.add('active');});
+  if(name==='create'){cStep=1;cTpl=0;renderCreate();}
+  if(name==='chat'){renderChatMsgs();renderDeckMini();}
+  if(name==='plaza'){renderPlaza();}
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ── INIT ──
+renderPlaza();renderChatMsgs();renderDeckMini();renderCreate();
 </script>
-
 </body>
 </html>
